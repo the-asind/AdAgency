@@ -1,13 +1,13 @@
 <Window x:Class="AdAgency.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login" Height="300" Width="300">
+        Title="Вход в систему" Height="300" Width="300">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox Width="200" Margin="5" Text="{Binding Username}" Tag="Username"/>
             <PasswordBox x:Name="PasswordBox" Width="200" Margin="5"/>
-            <Button Width="200" Margin="5" Content="Login" Command="{Binding LoginCommand}"/>
-            <Button Width="200" Margin="5" Content="Register" Command="{Binding RegisterCommand}"/>
+            <Button Width="200" Margin="5" Content="Войти" Command="{Binding LoginCommand}"/>
+            <Button Width="200" Margin="5" Content="Зарегистрироваться" Command="{Binding RegisterCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

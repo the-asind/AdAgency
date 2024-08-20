@@ -84,7 +84,6 @@ namespace AdAgency.ViewModels
             ConfigureBillboardsCommand = new RelayCommand(ConfigureBillboards, CanConfigureBillboards);
             Username = username;    
             
-            // Determine user role based on username
             var user = _context.Users.FirstOrDefault(u => u.Username == username);
             Role = user?.Role switch
             {
@@ -94,14 +93,13 @@ namespace AdAgency.ViewModels
                 _ => throw new System.Exception("Invalid user role")
             };
             
-            RenterInfo = _context.Renters.AsEnumerable().FirstOrDefault(r => r.Name == Username);
+            RenterInfo = _context.Renters.AsEnumerable().FirstOrDefault(r => r.RenterId == user?.RenterId);
             ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
                 .Include(contractBillboard => contractBillboard.Contract).AsEnumerable().Where(cb => RenterInfo != null && cb.Contract.RenterId == RenterInfo.RenterId).ToList());
             Contracts = new ObservableCollection<Contract>(_context.Contracts.AsEnumerable().Where(c => RenterInfo != null && c.RenterId == RenterInfo.RenterId).ToList());
             AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
             
-            var renter = _context.Renters.AsEnumerable().FirstOrDefault(r => r.Name == Username);
-            RenterOutput = renter?.ToString() ?? "No renter information available";
+            RenterOutput = user.Renter?.ToString() ?? "No renter information available";
 
             
         }
