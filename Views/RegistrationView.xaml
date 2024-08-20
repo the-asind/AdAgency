@@ -1,17 +1,41 @@
 <Window x:Class="AdAgency.Views.RegistrationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Register" Height="500" Width="500">
-    <Grid>
+        Title="Register" Height="900" Width="500">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Label Content="Регистрация арендатора" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="15"/>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Label Content="Register yourself!" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <Label Content="Agency Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBox Width="200" Margin="5" Text="{Binding AgencyName}"/>
+            <Label Content="Название арендатора" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding AgencyName}" ToolTip="Пример: Рога и копыта"/>
+            <Label Content="Статус" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <ComboBox Width="200" Margin="5" SelectedItem="{Binding Status}" ToolTip="Выберите статус из списка">
+                <ComboBoxItem Content="АО"/>
+                <ComboBoxItem Content="ООО"/>
+                <ComboBoxItem Content="ИП"/>
+                <ComboBoxItem Content="ГУП"/>
+                <ComboBoxItem Content="МУП"/>
+            </ComboBox>
+            <Label Content="Юридический адрес" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding LegalAddress}" ToolTip="Пример: ул. Пушкина, д. Колотушкина"/>
+            <Label Content="ФИО руководителя" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding DirectorName}" ToolTip="Пример: Иванов Иван Иванович"/>
+            <Label Content="Телефон руководителя" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding DirectorPhone}" ToolTip="Пример: +79991234567"/>
+            <Label Content="Ответственное лицо" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding ContactPersonName}" ToolTip="Пример: Петров Петр Петрович"/>
+            <Label Content="Телефон ответственного лица" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding ContactPersonPhone}" ToolTip="Пример: +79997654321"/>
+            <Label Content="Банк арендатора" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding BankName}" ToolTip="Пример: Сбербанк"/>
+            <Label Content="Номер счета в банке" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding BankAccountNumber}" ToolTip="Пример: 11122333455556666666"/>
+            <Label Content="ИНН арендатора" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBox Width="200" Margin="5" Text="{Binding Inn}" ToolTip="Пример: 987654321098"/>
             <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBox Width="200" Margin="5" Text="{Binding Username}"/>
+            <TextBox Width="200" Margin="5" Text="{Binding Username}" ToolTip="Используйте латинские символы и цифры: a-z, A-Z, 1-9"/>
             <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <TextBox Width="200" Margin="5" Text="{Binding Password}"/>
+            <TextBox Width="200" Margin="5" Text="{Binding Password}" ToolTip="Используйте латинские символы и цифры: a-z, A-Z, 1-9"/>
             <Button Width="200" Margin="5" Content="Register" Command="{Binding RegisterCommand}"/>
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </Window>

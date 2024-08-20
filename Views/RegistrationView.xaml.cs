@@ -2,14 +2,15 @@ using System.Windows;
 using AdAgency.Data;
 using AdAgency.ViewModels;
 
-namespace AdAgency.Views;
-
-public partial class RegistrationView : Window
+namespace AdAgency.Views
 {
-    public RegistrationView()
+    public partial class RegistrationView : Window
     {
-        InitializeComponent();
-        var context = new AdAgencyContext();
-        DataContext = new RegistrationViewModel(context);
+        public RegistrationView()
+        {
+            InitializeComponent();
+            var context = new AdAgencyContext();
+            DataContext = new RegistrationViewModel(context);
+        }
     }
 }

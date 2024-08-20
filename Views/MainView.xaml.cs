@@ -21,6 +21,7 @@ public partial class MainView : Window
             case MainViewModel.UserRole.Admin:
                 ConfiguratorButton.Visibility = Visibility.Collapsed;
                 RenterButton.Visibility = Visibility.Collapsed;
+                RenterGrid.Visibility = Visibility.Collapsed;
                 break;
             case MainViewModel.UserRole.Renter:
                 AdminButton.Visibility = Visibility.Collapsed;
@@ -29,6 +30,7 @@ public partial class MainView : Window
             case MainViewModel.UserRole.Configurator:
                 AdminButton.Visibility = Visibility.Collapsed;
                 RenterButton.Visibility = Visibility.Collapsed;
+                RenterGrid.Visibility = Visibility.Collapsed;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
