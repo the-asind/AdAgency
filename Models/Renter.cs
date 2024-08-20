@@ -6,7 +6,7 @@ public class Renter
 {
     [Key]
     public int RenterId { get; set; }
-    public required string Name { get; set; }
+    public required string? Name { get; set; }
     public required string Status { get; set; }
     public required string LegalAddress { get; set; }
     public required string DirectorName { get; set; }

@@ -12,7 +12,7 @@ public class AdAgencyContext : DbContext
     public DbSet<AdvertisementWork> AdvertisementWorks { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
-
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => 
         optionsBuilder.UseNpgsql("Host=localhost;Database=AdAgencyDB;Username=postgres;Password=secret");
 
