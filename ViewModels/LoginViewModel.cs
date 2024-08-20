@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using AdAgency.Data;
@@ -60,8 +61,8 @@ public class LoginViewModel : INotifyPropertyChanged
 
         if (user != null)
         {
-            // Open main panel
-            var mainView = new MainView();
+            Debug.Assert(Username != null, nameof(Username) + " != null");
+            var mainView = new MainView(Username);
             mainView.Show();
             if (Application.Current.MainWindow != null) 
                 Application.Current.MainWindow.Close();
