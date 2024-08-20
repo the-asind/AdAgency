@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using AdAgency.Models;
 
@@ -13,9 +14,12 @@ public class AdAgencyContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<AuditLog> AuditLogs { get; set; }
     
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => 
-        optionsBuilder.UseNpgsql("Host=localhost;Database=AdAgencyDB;Username=postgres;Password=secret");
-
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var connectionString = File.ReadAllText("D:\\Projects\\Repos\\AdAgency\\Resources\\secret.txt");
+        optionsBuilder.UseNpgsql(connectionString);
+    }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ContractBillboard>()
