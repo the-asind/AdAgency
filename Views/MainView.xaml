@@ -5,24 +5,28 @@
     
     <Grid>
         <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Username: " FontSize="24" FontWeight="Bold" Margin="5" />
-                <TextBlock Text="{Binding Username}" FontSize="24" Margin="5" />
+            <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Label Content="Логин пользователя: " FontSize="24" FontWeight="Bold"/>
+                <Label Content="{Binding Username}" FontSize="24"/>
             </StackPanel>
+            <Label Name="renterOutput" Content="{Binding RenterOutput}" Margin="15,0,15,15"/>
             <StackPanel Name="RenterGrid">
-                <Label Content="Renter Information:" Padding="15,0,0,0"/>
+                <Label Content="Информация по арендаторам:" Padding="15,0,0,0"/>
                 <DataGrid ItemsSource="{Binding RenterInfo}" AutoGenerateColumns="True" Margin="15" Height="100" />
-                <Label Content="Active Billboards:" Padding="15,0,0,0"/>
-                <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="True" Margin="15" Height="100" />
             </StackPanel>
-            <Label Content="Contracts:" Padding="15,0,0,0"/>
+            <StackPanel Name="BillboardsGrid">
+                <Label Content="Рекламные щиты:" Padding="15,0,0,0" />
+                <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="True" Margin="15"
+                          Height="100" />
+            </StackPanel>
+            <Label Content="Контракты:" Padding="15,0,0,0"/>
             <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True" Margin="15" Height="100" />
-            <Label Content="Advertisement Works:" Padding="15,0,0,0"/>
+            <Label Content="Работы по монтажу:" Padding="15,0,0,0"/>
             <DataGrid ItemsSource="{Binding AdvertisementWorks}" AutoGenerateColumns="True" Margin="15" Height="100" />
-            <Button Name="AdminButton" Content="Admin Panel" Command="{Binding AdminPanelCommand}" Margin="5"/>
-            <Button Name="ConfiguratorButton" Content="Configure Billboards" Command="{Binding ConfigureBillboardsCommand}" Margin="5"
+            <Button Name="AdminButton" Content="Админ-панель" Command="{Binding AdminPanelCommand}" Margin="5"/>
+            <Button Name="ConfiguratorButton" Content="Конфигурирование рекламных щитов" Command="{Binding ConfigureBillboardsCommand}" Margin="5"
                     Style="{StaticResource MaterialDesignRaisedButton}" />
-            <Button Name="RenterButton" Content="Order Billboard" Command="{Binding OrderBillboardCommand}" Margin="5"
+            <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OrderBillboardCommand}" Margin="5"
                     Style="{StaticResource MaterialDesignRaisedButton}" />
         </StackPanel>
     </Grid>

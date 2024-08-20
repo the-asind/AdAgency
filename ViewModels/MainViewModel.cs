@@ -64,6 +64,16 @@ namespace AdAgency.ViewModels
         public ICommand AdminPanelCommand { get; set; }
         public ICommand ConfigureBillboardsCommand { get; set; }
         
+        private string _renterOutput;
+        public string RenterOutput
+        {
+            get => _renterOutput;
+            set
+            {
+                _renterOutput = value;
+                OnPropertyChanged();
+            }
+        }
         
         public MainViewModel(AdAgencyContext context, string username)
         {
@@ -84,12 +94,16 @@ namespace AdAgency.ViewModels
                 _ => throw new System.Exception("Invalid user role")
             };
             
-            // Added logic to get the renter info, contracts_billboards, contracts, and advertisement_works
             RenterInfo = _context.Renters.AsEnumerable().FirstOrDefault(r => r.Name == Username);
             ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
                 .Include(contractBillboard => contractBillboard.Contract).AsEnumerable().Where(cb => RenterInfo != null && cb.Contract.RenterId == RenterInfo.RenterId).ToList());
             Contracts = new ObservableCollection<Contract>(_context.Contracts.AsEnumerable().Where(c => RenterInfo != null && c.RenterId == RenterInfo.RenterId).ToList());
             AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
+            
+            var renter = _context.Renters.AsEnumerable().FirstOrDefault(r => r.Name == Username);
+            RenterOutput = renter?.ToString() ?? "No renter information available";
+
+            
         }
 
         private void LoadBillboards()

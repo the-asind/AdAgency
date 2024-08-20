@@ -6,6 +6,7 @@ using AdAgency.Data;
 using AdAgency.Models;
 using AdAgency.Views;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 namespace AdAgency.ViewModels
 {
@@ -94,16 +95,23 @@ namespace AdAgency.ViewModels
                 MessageBox.Show("Некорректный номер телефона. Номер должен начинаться с +7 и содержать 10 цифр после.");
                 return;
             }
+            
+            var existingUser = _context.Users.FirstOrDefault(u => u.Username == Username);
+            if (existingUser != null)
+            {
+                MessageBox.Show("Пользователь с таким логином уже существует. Пожалуйста, выберите другой логин.");
+                return;
+            }
 
             var newUser = new User
             {
                 Username = Username,
-                PasswordHash = Password,
+                PasswordHash = PasswordHasher.HashPassword(Password),
                 Role = "renter",
                 Renter = new Renter
                 {
                     Name = AgencyName,
-                    Status = Status,
+                    Status = Status.Replace("System.Windows.Controls.ComboBoxItem: ", ""),
                     LegalAddress = LegalAddress,
                     DirectorName = DirectorName,
                     DirectorPhone = DirectorPhone,

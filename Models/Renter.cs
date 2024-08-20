@@ -16,4 +16,18 @@ public class Renter
     public required string BankName { get; set; }
     public required string BankAccountNumber { get; set; }
     public required string Inn { get; set; }
+    
+    public override string ToString()
+    {
+        return $"Название:  {Status} \"{Name}\"\n" +
+               $"Юридический адрес: {LegalAddress}\n" +
+               $"ФИО руководителя: {DirectorName}\n" +
+               $"Телефон руководителя: {DirectorPhone}\n" +
+               $"Ответственное лицо: {ContactPersonName}\n" +
+               $"Телефон ответственного лица: {ContactPersonPhone}\n" +
+               $"Банк арендатора: {BankName}\n" +
+               $"Номер счета в банке: {BankAccountNumber}\n" +
+               $"ИНН арендатора: {Inn}";
+    }
 }
+

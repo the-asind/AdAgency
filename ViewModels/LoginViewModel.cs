@@ -57,7 +57,8 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private void Login()
     {
-        var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == Password); // Simplified for example purposes
+        var hashedPassword = PasswordHasher.HashPassword(Password);
+        var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == hashedPassword);
 
         if (user != null)
         {

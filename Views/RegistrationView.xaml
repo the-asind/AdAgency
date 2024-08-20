@@ -31,9 +31,9 @@
             <TextBox Width="200" Margin="5" Text="{Binding BankAccountNumber}" ToolTip="Пример: 11122333455556666666"/>
             <Label Content="ИНН арендатора" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox Width="200" Margin="5" Text="{Binding Inn}" ToolTip="Пример: 987654321098"/>
-            <Label Content="Username" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Логин" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox Width="200" Margin="5" Text="{Binding Username}" ToolTip="Используйте латинские символы и цифры: a-z, A-Z, 1-9"/>
-            <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Label Content="Пароль" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox Width="200" Margin="5" Text="{Binding Password}" ToolTip="Используйте латинские символы и цифры: a-z, A-Z, 1-9"/>
             <Button Width="200" Margin="5" Content="Register" Command="{Binding RegisterCommand}"/>
         </StackPanel>
