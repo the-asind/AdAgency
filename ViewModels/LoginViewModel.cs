@@ -84,6 +84,9 @@ public class LoginViewModel : INotifyPropertyChanged
     {
         var registrationView = new RegistrationView();
         registrationView.Show();
+        if (Application.Current.MainWindow != null) 
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = registrationView;
     }
 
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

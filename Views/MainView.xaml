@@ -1,10 +1,10 @@
 <Window x:Class="AdAgency.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        MinWidth="480" MinHeight="480"
-        Title="Рекламное агентство" Width="1280" Height="720" Loaded="Window_Loaded">
+        MinWidth="720" MinHeight="720" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Title="Рекламное агентство" Loaded="Window_Loaded">
     
-    <StackPanel Orientation="Vertical" >
+    <StackPanel Orientation="Vertical" CanVerticallyScroll="True" >
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <Label Content="Логин пользователя: " FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
