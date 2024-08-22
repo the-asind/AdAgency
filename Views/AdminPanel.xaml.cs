@@ -7,11 +7,11 @@ namespace AdAgency.Views;
 
 public partial class AdminPanel : Window
 {
-    public AdminPanel()
+    public AdminPanel(string username)
     {
         InitializeComponent();
         var context = new AdAgencyContext();
-        DataContext = new AdminPanelViewModel(context);
+        DataContext = new AdminPanelViewModel(context, username);
     }
 
     private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -26,11 +26,12 @@ public partial class AdminPanel : Window
 
     private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
     {
-        // Implement logic to create a new employee account
-    }
-
-    private void EditAccountButton_Click(object sender, RoutedEventArgs e)
-    {
-        // Implement logic to edit an existing employee account
+        var username = usernameTextBox.Text;
+        var password = passwordBox.Password;
+        var role = ((ComboBoxItem)roleComboBox.SelectedItem).Content.ToString();
+        int? renterId = null;
+        if (renterID.Text != "")
+            renterId = int.Parse(renterID.Text);
+        ((AdminPanelViewModel)DataContext).CreateAccount(username, password, role, renterId);
     }
 }

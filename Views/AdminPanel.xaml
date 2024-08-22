@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Title="AdminPanel" MinHeight="720" MinWidth="1280">
+    <ScrollViewer>
     <StackPanel Margin="10">
         <Label Content="Прямое взаимодействие с базой данных" HorizontalAlignment="Center" FontSize="20"
                Margin="15,15,15,0" FontWeight="Bold" />
@@ -19,35 +20,37 @@
             <ComboBoxItem Content="Contract" />
             <ComboBoxItem Content="ContractBillboard" />
             <ComboBoxItem Content="Renter" />
-            <ComboBoxItem Content="User" FontStyle="Italic" FontWeight="Thin"
+            <ComboBoxItem Content="User" FontWeight="Thin"
                           ToolTip="Работа с пользователями безопаснее в форме ниже." />
         </ComboBox>
         <DataGrid x:Name="dbTableDataGrid" Margin="10" AutoGenerateColumns="True" ItemsSource="{Binding DbTableData}"
-                  MinWidth="690" MinHeight="150" Height="Auto" Width="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="110"/>
+                  MinWidth="690" MinHeight="150" MaxHeight="400" VerticalScrollBarVisibility="Auto" ColumnWidth="110" />
 
-        <Button x:Name="saveButton" Content="Save" Click="SaveButton_Click" MaxWidth="720" />
+        <Button x:Name="saveButton" Content="Сохранить" Click="SaveButton_Click" MaxWidth="720" />
 
         <StackPanel MaxWidth="720">
             <Label Content="Создание и редактирование пользователей" HorizontalAlignment="Center" FontSize="20"
                    Margin="15" FontWeight="Bold" />
             <Label Content="Логин:" />
-            <TextBox x:Name="usernameTextBox" />
+            <TextBox x:Name="usernameTextBox" Margin="5" />
 
             <Label Content="Пароль:" />
-            <PasswordBox x:Name="passwordBox" />
+            <PasswordBox x:Name="passwordBox" Margin="5" />
 
             <Label Content="Роль:" />
-            <ComboBox x:Name="roleComboBox">
-                <ComboBoxItem Content="Admin" />
-                <ComboBoxItem Content="Renter" />
-                <ComboBoxItem Content="Configurator" />
+            <ComboBox x:Name="roleComboBox" Margin="5" SelectedIndex="0">
+                <ComboBoxItem Content="renter" />
+                <ComboBoxItem Content="configurator" />
+                <ComboBoxItem Content="admin" />
             </ComboBox>
 
-            <Label Content="RenterID:" />
-            <TextBox x:Name="renterID" />
+            <Label Content="RenterID: (можно узнать в соответствующей таблице)" />
+            <TextBox x:Name="renterID" Margin="5" />
 
-            <Button x:Name="createAccountButton" Content="Создать аккаунт" Click="CreateAccountButton_Click" />
-            <Button x:Name="editAccountButton" Content="Редактировать аккаунт" Click="EditAccountButton_Click" />
+            <Button x:Name="createAccountButton" Content="Создать аккаунт" Click="CreateAccountButton_Click" Margin="5" />
+            <Label Content="Если логин уже существует, то соответствующий аккаунт будет обновлён."
+                   HorizontalAlignment="Center" />
         </StackPanel>
     </StackPanel>
+    </ScrollViewer>
 </Window>

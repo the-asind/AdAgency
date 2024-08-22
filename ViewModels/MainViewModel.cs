@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -92,7 +91,7 @@ namespace AdAgency.ViewModels
                 "admin" => UserRole.Admin,
                 "renter" => UserRole.Renter,
                 "configurator" => UserRole.Configurator,
-                _ => throw new System.Exception("Invalid user role")
+                _ => throw new Exception("Invalid user role")
             };
             
             RenterInfo = _context.Renters.AsEnumerable().FirstOrDefault(r => r.RenterId == user?.RenterId);
@@ -113,7 +112,8 @@ namespace AdAgency.ViewModels
 
         private void OpenAdminPanel()
         {
-            var adminPanel = new AdminPanel();
+            if (Username == null) return;
+            var adminPanel = new AdminPanel(Username);
             adminPanel.Show();
             if (Application.Current.MainWindow != null) 
                 Application.Current.MainWindow.Close();

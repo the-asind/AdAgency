@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Forms;
 using AdAgency.Data;
 using AdAgency.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
     private readonly AdAgencyContext _context;
 
     private ObservableCollection<object> _dbTableData = null!;
+    private readonly string _username;
 
     public ObservableCollection<object> DbTableData
     {
@@ -31,26 +33,37 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
         }
     }
 
-    public AdminPanelViewModel(AdAgencyContext context)
+    public AdminPanelViewModel(AdAgencyContext context, string username)
     {
+        _username = username;
         _context = context;
         DbTableData = new ObservableCollection<object>();
     }
 
     public void LoadDbTableData()
     {
-        if (SelectedDbTable == null) return;
-        DbTableData = SelectedDbTable switch
+        switch (SelectedDbTable)
         {
-            "AdvertisementWork" => new ObservableCollection<object>(_context.AdvertisementWorks.ToList()),
-            "AuditLogs" => new ObservableCollection<object>(_context.AuditLogs.ToList()),
-            "Billboard" => new ObservableCollection<object>(_context.Billboards.ToList()),
-            "Contract" => new ObservableCollection<object>(_context.Contracts.ToList()),
-            "ContractBillboard" => new ObservableCollection<object>(_context.ContractBillboards.ToList()),
-            "Renter" => new ObservableCollection<object>(_context.Renters.ToList()),
-            "User" => new ObservableCollection<object>(_context.Users.ToList()),
-            _ => DbTableData
-        };
+            case null:
+                return;
+            case "User":
+                MessageBox.Show(
+                    "Редактирование таблицы пользователей может привести к поломке изменённого аккаунта. После изменения данных придётся перезайти.");
+                DbTableData = new ObservableCollection<object>(_context.Users.ToList());
+                return;
+            default:
+                DbTableData = SelectedDbTable switch
+                {
+                    "AdvertisementWork" => new ObservableCollection<object>(_context.AdvertisementWorks.ToList()),
+                    "AuditLogs" => new ObservableCollection<object>(_context.AuditLogs.ToList()),
+                    "Billboard" => new ObservableCollection<object>(_context.Billboards.ToList()),
+                    "Contract" => new ObservableCollection<object>(_context.Contracts.ToList()),
+                    "ContractBillboard" => new ObservableCollection<object>(_context.ContractBillboards.ToList()),
+                    "Renter" => new ObservableCollection<object>(_context.Renters.ToList()),
+                    _ => DbTableData
+                };
+                break;
+        }
     }
 
     public void SaveDbTableData()
@@ -84,30 +97,59 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
             case "User":
                 foreach (User item in DbTableData)
                     _context.Entry(item).State = item.UserId == 0 ? EntityState.Added : EntityState.Modified;
+                MessageBox.Show("Вы вручную изменили таблицу пользователей. Пожалуйста, перезайдите.");
+                Environment.Exit(0);
                 break;
         }
 
         _context.SaveChanges();
     }
 
-    public void SaveChanges()
+    private bool CheckLoginExistence(string username)
     {
-        // Implement logic to save changes to the database
+        return _context.Users.Any(u => u.Username == username);
     }
 
-    public void CreateAccount()
+    private void UpdateOrCreateAccount(string username, string password, string role, int? renterId)
     {
-        // Implement logic to create a new employee account
+        var userExists = CheckLoginExistence(username);
+        var passwordHash = PasswordHasher.HashPassword(password);
+        if (userExists)
+        {
+            var user = _context.Users.First(u => u.Username == username);
+            user.PasswordHash = passwordHash;
+            user.Role = role;
+            user.RenterId = renterId;
+            MessageBox.Show($"Аккаунт {username} успешно обновлён.");
+        }
+        else
+        {
+            var newUser = new User
+            {
+                Username = username,
+                PasswordHash = passwordHash,
+                Role = role,
+                RenterId = renterId
+            };
+            _context.Users.Add(newUser);
+            MessageBox.Show($"Аккаунт {username} успешно создан.");
+        }
+
+        _context.SaveChanges();
+        if (username != _username) return;
+
+        MessageBox.Show("Вы обновили свой аккаунт. Пожалуйста, перезайдите.");
+        Environment.Exit(0);
     }
 
-    public void EditAccount()
+    public void CreateAccount(string username, string password, string role, int? renterId)
     {
-        // Implement logic to edit an existing employee account
+        UpdateOrCreateAccount(username, password, role, renterId);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
