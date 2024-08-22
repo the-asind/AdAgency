@@ -57,6 +57,11 @@ public class LoginViewModel : INotifyPropertyChanged
 
     private void Login()
     {
+        if (Username == null || Password == null)
+        {
+            MessageBox.Show("Введите логин и пароль.");
+            return;
+        }
         var hashedPassword = PasswordHasher.HashPassword(Password);
         var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == hashedPassword);
 
@@ -71,7 +76,7 @@ public class LoginViewModel : INotifyPropertyChanged
         }
         else
         {
-            MessageBox.Show("Invalid username or password.");
+            MessageBox.Show("Неверный логин или пароль.");
         }
     }
 
