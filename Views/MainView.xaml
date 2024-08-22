@@ -3,32 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         MinWidth="720" MinHeight="720" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Title="Рекламное агентство" Loaded="Window_Loaded">
-    
-    <StackPanel Orientation="Vertical" CanVerticallyScroll="True" >
+
+    <StackPanel Orientation="Vertical" CanVerticallyScroll="True">
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Top">
-                <Label Content="Логин пользователя: " FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
-                <Label Content="{Binding Username}" FontSize="24" VerticalAlignment="Center"/>
+                <Label Content="Логин пользователя: " FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
+                <Label Content="{Binding Username}" FontSize="24" VerticalAlignment="Center" />
             </StackPanel>
-            <Button Name="AdminButton" Content="Открыть Админ-панель" Command="{Binding AdminPanelCommand}" Margin="15" HorizontalAlignment="Left" Padding="50,0,50,0"/>
-            <Label Name="renterOutput" Content="{Binding RenterOutput}" Margin="15" HorizontalAlignment="Left" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+            <Button Name="ConfiguratorButton" Content="Конфигурирование рекламных щитов"
+                    Command="{Binding ConfigureBillboardsCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}" Margin="15" HorizontalAlignment="Left"
+                    Padding="10,0,10,0" />
+            <Button Name="AdminButton" Content="Открыть Админ-панель" Command="{Binding AdminPanelCommand}" Margin="15"
+                    HorizontalAlignment="Left" Padding="50,0,50,0" />
+            <Label Name="renterOutput" Content="{Binding RenterOutput}" Margin="15" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" HorizontalContentAlignment="Right" />
         </Grid>
-        <StackPanel Name="RenterGrid">
-            <Label Content="Информация по арендаторам:" Padding="15,0,0,0"/>
-            <DataGrid ItemsSource="{Binding RenterInfo}" AutoGenerateColumns="True" Margin="15" Height="100" />
+        <StackPanel Name="AuditGrid" Visibility="Collapsed">
+            <Label Content="AUDIT LOGS:" Padding="15,0,0,0" />
+            <DataGrid ItemsSource="{Binding AuditLogs}" AutoGenerateColumns="True" Margin="15" Height="100" />
         </StackPanel>
-        <StackPanel Name="BillboardsGrid">
-            <Label Content="Рекламные щиты:" Padding="15,0,0,0" />
-            <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="True" Margin="15"
+        <StackPanel Name="RenterGrid">
+            <Label Content="Информация по арендаторам:" Padding="15,0,0,0" />
+            <DataGrid ItemsSource="{Binding RenterInfo}" AutoGenerateColumns="True" Margin="15" MinHeight="50"
                       Height="100" />
         </StackPanel>
-        <Label Content="Контракты:" Padding="15,0,0,0"/>
-        <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True" Margin="15" Height="100" />
-        <Label Content="Работы по монтажу:" Padding="15,0,0,0"/>
-        <DataGrid ItemsSource="{Binding AdvertisementWorks}" AutoGenerateColumns="True" Margin="15" Height="100" />
-        <Button Name="ConfiguratorButton" Content="Конфигурирование рекламных щитов" Command="{Binding ConfigureBillboardsCommand}" Margin="5"
+        <Label Content="Рекламные щиты:" Padding="15,0,0,0" />
+        <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="True" Margin="15"
+                  MinHeight="50" Height="100" />
+        <Label Content="Контракты:" Padding="15,0,0,0" />
+        <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True" Margin="15" Height="100" MinHeight="50" />
+        <Label Content="Работы по монтажу:" Padding="15,0,0,0" />
+        <DataGrid ItemsSource="{Binding AdvertisementWorks}" AutoGenerateColumns="True" Margin="15" Height="100"
+                  MinHeight="50" />
+
+        <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OrderBillboardCommand}"
+                Margin="15"
                 Style="{StaticResource MaterialDesignRaisedButton}" />
-        <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OrderBillboardCommand}" Margin="5"
-                Style="{StaticResource MaterialDesignRaisedButton}" />
-        </StackPanel>
+    </StackPanel>
 </Window>

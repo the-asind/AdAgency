@@ -1,0 +1,53 @@
+<Window x:Class="AdAgency.Views.AdminPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Title="AdminPanel" MinHeight="720" MinWidth="1280">
+    <StackPanel Margin="10">
+        <Label Content="Прямое взаимодействие с базой данных" HorizontalAlignment="Center" FontSize="20"
+               Margin="15,15,15,0" FontWeight="Bold" />
+        <Label Content="Корректность данных не будет проверена!" HorizontalAlignment="Center" FontSize="12"
+               Margin="15,0,15,15" />
+        <Label Content="Таблица:" MaxWidth="720" />
+        <ComboBox x:Name="DbComboBox" SelectedItem="{Binding SelectedDbTable}" SelectedValuePath="Content"
+                  SelectionChanged="DbComboBox_SelectionChanged" MaxWidth="720">
+            <ComboBoxItem Content="AdvertisementWork" />
+            <ComboBoxItem Content="AuditLogs" />
+            <ComboBoxItem Content="Billboard" />
+            <ComboBoxItem Content="Contract" />
+            <ComboBoxItem Content="ContractBillboard" />
+            <ComboBoxItem Content="Renter" />
+            <ComboBoxItem Content="User" FontStyle="Italic" FontWeight="Thin"
+                          ToolTip="Работа с пользователями безопаснее в форме ниже." />
+        </ComboBox>
+        <DataGrid x:Name="dbTableDataGrid" Margin="10" AutoGenerateColumns="True" ItemsSource="{Binding DbTableData}"
+                  MinWidth="690" MinHeight="150" Height="Auto" Width="Auto" VerticalScrollBarVisibility="Auto" ColumnWidth="110"/>
+
+        <Button x:Name="saveButton" Content="Save" Click="SaveButton_Click" MaxWidth="720" />
+
+        <StackPanel MaxWidth="720">
+            <Label Content="Создание и редактирование пользователей" HorizontalAlignment="Center" FontSize="20"
+                   Margin="15" FontWeight="Bold" />
+            <Label Content="Логин:" />
+            <TextBox x:Name="usernameTextBox" />
+
+            <Label Content="Пароль:" />
+            <PasswordBox x:Name="passwordBox" />
+
+            <Label Content="Роль:" />
+            <ComboBox x:Name="roleComboBox">
+                <ComboBoxItem Content="Admin" />
+                <ComboBoxItem Content="Renter" />
+                <ComboBoxItem Content="Configurator" />
+            </ComboBox>
+
+            <Label Content="RenterID:" />
+            <TextBox x:Name="renterID" />
+
+            <Button x:Name="createAccountButton" Content="Создать аккаунт" Click="CreateAccountButton_Click" />
+            <Button x:Name="editAccountButton" Content="Редактировать аккаунт" Click="EditAccountButton_Click" />
+        </StackPanel>
+    </StackPanel>
+</Window>

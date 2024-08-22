@@ -2,9 +2,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using AdAgency.Data;
 using AdAgency.Models;
+using AdAgency.Views;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdAgency.ViewModels
@@ -99,7 +101,7 @@ namespace AdAgency.ViewModels
             Contracts = new ObservableCollection<Contract>(_context.Contracts.AsEnumerable().Where(c => RenterInfo != null && c.RenterId == RenterInfo.RenterId).ToList());
             AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
             
-            RenterOutput = user.Renter?.ToString() ?? "No renter information available";
+            RenterOutput = user.Renter?.ToString() ?? "Информация об арендаторе отсутствует";
 
             
         }
@@ -111,25 +113,21 @@ namespace AdAgency.ViewModels
 
         private void OpenAdminPanel()
         {
-            // Implement logic to open the admin panel
+            var adminPanel = new AdminPanel();
+            adminPanel.Show();
+            if (Application.Current.MainWindow != null) 
+                Application.Current.MainWindow.Close();
+            Application.Current.MainWindow = adminPanel;
         }
-
-        private bool CanOpenAdminPanel()
-        {
-            // Implement logic to check if the user is an admin
-            return true; // Replace with actual logic
-        }
+        
+        private bool CanOpenAdminPanel() => UserRole.Admin == Role;
 
         private void ConfigureBillboards()
         {
             // Implement logic to configure billboards
         }
 
-        private bool CanConfigureBillboards()
-        {
-            // Implement logic to check if the user is a manager
-            return true; // Replace with actual logic
-        }
+        private bool CanConfigureBillboards() => UserRole.Configurator == Role;
 
         private void OrderBillboard()
         {

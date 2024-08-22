@@ -8,16 +8,11 @@ public static class PasswordHasher
 {
     public static string HashPassword(string password)
     {
-        using (var sha256Hash = SHA256.Create())
-        {
-            var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
 
-            var builder = new StringBuilder();
-            for (var i = 0; i < bytes.Length; i++)
-            {
-                builder.Append(bytes[i].ToString("x2"));
-            }
-            return builder.ToString();
-        }
+        var builder = new StringBuilder();
+        foreach (var t in bytes)
+            builder.Append(t.ToString("x2"));
+        return builder.ToString();
     }
 }
