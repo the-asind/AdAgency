@@ -38,7 +38,6 @@
                   MinHeight="50" />
 
         <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OrderBillboardCommand}"
-                Margin="15"
-                Style="{StaticResource MaterialDesignRaisedButton}" />
+                Margin="15" Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
     </StackPanel>
 </Window>

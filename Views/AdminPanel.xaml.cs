@@ -39,11 +39,17 @@ public partial class AdminPanel : Window
 
     private void BackToMain_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_username == null) return;
         var mainWindow = new MainView(_username);
         mainWindow.Show();
         if (Application.Current.MainWindow != null)
             Application.Current.MainWindow.Close();
         Application.Current.MainWindow = mainWindow;
+    }
+
+    private void RoleComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (roleComboBox == null || renterID == null)
+            return;
+        renterID.IsEnabled = roleComboBox.SelectedIndex == 0;
     }
 }

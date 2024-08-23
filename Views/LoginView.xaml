@@ -7,8 +7,9 @@
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBox Width="200" Margin="5" Text="{Binding Username}" Tag="Username"/>
             <PasswordBox x:Name="PasswordBox" Width="200" Margin="5"/>
-            <Button Width="200" Margin="5" Content="Войти" Command="{Binding LoginCommand}"/>
-            <Button Width="200" Margin="5" Content="Зарегистрироваться" Command="{Binding RegisterCommand}"/>
+            <Button Width="200" Margin="5" Content="Войти" Command="{Binding LoginCommand}" />
+            <Button Width="200" Margin="5" Content="Зарегистрироваться" Command="{Binding RegisterCommand}"
+                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
         </StackPanel>
     </Grid>
 </Window>
