@@ -50,84 +50,104 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
                 MessageBox.Show(
                     "Редактирование таблицы пользователей может привести к поломке изменённого аккаунта. После изменения данных придётся перезайти.");
                 DbTableData = new ObservableCollection<object>(_context.Users.ToList());
-                return;
+                break;
+            case "AdvertisementWork":
+                DbTableData = new ObservableCollection<object>(_context.AdvertisementWorks.ToList());
+                break;
+            case "AuditLogs":
+                DbTableData = new ObservableCollection<object>(_context.AuditLogs.ToList());
+                break;
+            case "Billboard":
+                DbTableData = new ObservableCollection<object>(_context.Billboards.ToList());
+                break;
+            case "Contract":
+                DbTableData = new ObservableCollection<object>(_context.Contracts.ToList());
+                break;
+            case "ContractBillboard":
+                DbTableData = new ObservableCollection<object>(_context.ContractBillboards.ToList());
+                break;
+            case "Renter":
+                DbTableData = new ObservableCollection<object>(_context.Renters.ToList());
+                break;
             default:
-                DbTableData = SelectedDbTable switch
-                {
-                    "AdvertisementWork" => new ObservableCollection<object>(_context.AdvertisementWorks.ToList()),
-                    "AuditLogs" => new ObservableCollection<object>(_context.AuditLogs.ToList()),
-                    "Billboard" => new ObservableCollection<object>(_context.Billboards.ToList()),
-                    "Contract" => new ObservableCollection<object>(_context.Contracts.ToList()),
-                    "ContractBillboard" => new ObservableCollection<object>(_context.ContractBillboards.ToList()),
-                    "Renter" => new ObservableCollection<object>(_context.Renters.ToList()),
-                    _ => []
-                };
+                DbTableData = new ObservableCollection<object>();
                 break;
         }
 
         if (DbTableData.Any()) return;
+
         switch (SelectedDbTable)
         {
             case "AdvertisementWork":
-                DbTableData.Add(AdvertisementWork.CreateEmpty());
+                _context.AdvertisementWorks.Add(AdvertisementWork.CreateEmpty());
                 break;
             case "AuditLogs":
-                DbTableData.Add(AuditLog.CreateEmpty());
+                _context.AuditLogs.Add(AuditLog.CreateEmpty());
                 break;
             case "Billboard":
-                DbTableData.Add(Billboard.CreateEmpty());
+                _context.Billboards.Add(Billboard.CreateEmpty());
                 break;
             case "Contract":
-                DbTableData.Add(Contract.CreateEmpty());
+                _context.Contracts.Add(Contract.CreateEmpty());
                 break;
             case "ContractBillboard":
-                DbTableData.Add(ContractBillboard.CreateEmpty());
+                _context.ContractBillboards.Add(ContractBillboard.CreateEmpty());
                 break;
             case "Renter":
-                DbTableData.Add(Renter.CreateEmpty());
-                break;
-        }
-
-        DbTableData.Clear();
-    }
-
-    public void SaveDbTableData()
-    {
-        switch (SelectedDbTable)
-        {
-            case "AdvertisementWork":
-                foreach (AdvertisementWork item in DbTableData)
-                    _context.Entry(item).State = item.WorkId == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "AuditLogs":
-                foreach (AuditLog item in DbTableData)
-                    _context.Entry(item).State = item.LogId == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "Billboard":
-                foreach (Billboard item in DbTableData)
-                    _context.Entry(item).State = item.BillboardId == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "Contract":
-                foreach (Contract item in DbTableData)
-                    _context.Entry(item).State = item.ContractId == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "ContractBillboard":
-                foreach (ContractBillboard item in DbTableData)
-                    _context.Entry(item).State = item.Id == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "Renter":
-                foreach (Renter item in DbTableData)
-                    _context.Entry(item).State = item.RenterId == 0 ? EntityState.Added : EntityState.Modified;
-                break;
-            case "User":
-                foreach (User item in DbTableData)
-                    _context.Entry(item).State = item.UserId == 0 ? EntityState.Added : EntityState.Modified;
-                MessageBox.Show("Вы вручную изменили таблицу пользователей. Пожалуйста, перезайдите.");
-                Environment.Exit(0);
+                _context.Renters.Add(Renter.CreateEmpty());
                 break;
         }
 
         _context.SaveChanges();
+    }
+
+    public void SaveDbTableData()
+    {
+        try
+        {
+            switch (SelectedDbTable)
+            {
+                case "AdvertisementWork":
+                    foreach (AdvertisementWork item in DbTableData)
+                        _context.Entry(item).State = item.WorkId == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "AuditLogs":
+                    foreach (AuditLog item in DbTableData)
+                        _context.Entry(item).State = item.LogId == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "Billboard":
+                    foreach (Billboard item in DbTableData)
+                        _context.Entry(item).State = item.BillboardId == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "Contract":
+                    foreach (Contract item in DbTableData)
+                        _context.Entry(item).State = item.ContractId == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "ContractBillboard":
+                    foreach (ContractBillboard item in DbTableData)
+                        _context.Entry(item).State = item.Id == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "Renter":
+                    foreach (Renter item in DbTableData)
+                        _context.Entry(item).State = item.RenterId == 0 ? EntityState.Added : EntityState.Modified;
+                    break;
+                case "User":
+                    foreach (User item in DbTableData)
+                        _context.Entry(item).State = item.UserId == 0 ? EntityState.Added : EntityState.Modified;
+                    MessageBox.Show("Вы вручную изменили таблицу пользователей. Пожалуйста, перезайдите.");
+                    Environment.Exit(0);
+                    break;
+            }
+
+            _context.SaveChanges();
+            MessageBox.Show("Данные успешно сохранены.");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show($"Ошибка сохранения данных: {e}");
+        }
+
+        
     }
 
     private bool CheckLoginExistence(string username)

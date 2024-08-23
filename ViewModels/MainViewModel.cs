@@ -98,8 +98,10 @@ namespace AdAgency.ViewModels
             ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
                 .Include(contractBillboard => contractBillboard.Contract).AsEnumerable().Where(cb => RenterInfo != null && cb.Contract.RenterId == RenterInfo.RenterId).ToList());
             Contracts = new ObservableCollection<Contract>(_context.Contracts.AsEnumerable().Where(c => RenterInfo != null && c.RenterId == RenterInfo.RenterId).ToList());
-            AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
-            
+            //AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
+            AdvertisementWorks =
+                new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.OfType<AdvertisementWork>()
+                    .ToList());
             RenterOutput = user.Renter?.ToString() ?? "Информация об арендаторе отсутствует";
 
             

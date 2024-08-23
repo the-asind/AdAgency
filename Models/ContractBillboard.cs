@@ -10,12 +10,12 @@ public class ContractBillboard
     public required Contract Contract { get; set; }
     public int BillboardId { get; set; }
     public required Billboard Billboard { get; set; }
-    public DateTime RentStartDate { get; set; }
-    public DateTime RentEndDate { get; set; }
+    [Timestamp] public byte[] RentStartDate { get; set; }
+    [Timestamp] public byte[] RentEndDate { get; set; }
     public decimal RentAmount { get; set; }
     public required byte[] AdvertisementPhoto { get; set; }
 
-    public static object CreateEmpty()
+    public static ContractBillboard CreateEmpty()
     {
         return new ContractBillboard
         {

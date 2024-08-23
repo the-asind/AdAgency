@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -35,7 +34,7 @@ namespace AdAgency.Migrations
                 {
                     RenterId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<string>(type: "text", nullable: false),
                     LegalAddress = table.Column<string>(type: "text", nullable: false),
                     DirectorName = table.Column<string>(type: "text", nullable: false),
@@ -57,12 +56,12 @@ namespace AdAgency.Migrations
                 {
                     ContractId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ContractNumber = table.Column<string>(type: "text", nullable: false),
-                    SigningDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AgencyResponsible = table.Column<string>(type: "text", nullable: false),
+                    ContractNumber = table.Column<string>(type: "text", nullable: true),
+                    SigningDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
+                    AgencyResponsible = table.Column<string>(type: "text", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    PaymentType = table.Column<string>(type: "text", nullable: false),
-                    AdditionalTerms = table.Column<string>(type: "text", nullable: false),
+                    PaymentType = table.Column<string>(type: "text", nullable: true),
+                    AdditionalTerms = table.Column<string>(type: "text", nullable: true),
                     RenterId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -82,8 +81,8 @@ namespace AdAgency.Migrations
                 {
                     UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: true),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
                     Role = table.Column<string>(type: "text", nullable: false),
                     RenterId = table.Column<int>(type: "integer", nullable: true)
                 },
@@ -126,8 +125,8 @@ namespace AdAgency.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ContractId = table.Column<int>(type: "integer", nullable: false),
                     BillboardId = table.Column<int>(type: "integer", nullable: false),
-                    RentStartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    RentEndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RentStartDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
+                    RentEndDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
                     RentAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     AdvertisementPhoto = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
@@ -158,7 +157,7 @@ namespace AdAgency.Migrations
                     Action = table.Column<string>(type: "text", nullable: false),
                     TableName = table.Column<string>(type: "text", nullable: false),
                     RecordId = table.Column<int>(type: "integer", nullable: true),
-                    ActionTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

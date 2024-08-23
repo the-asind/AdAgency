@@ -11,7 +11,7 @@ public class AdvertisementWork
     public string? WorkDescription { get; set; }
     public decimal WorkCost { get; set; }
 
-    public static object CreateEmpty()
+    public static AdvertisementWork CreateEmpty()
     {
         return new AdvertisementWork
         {
