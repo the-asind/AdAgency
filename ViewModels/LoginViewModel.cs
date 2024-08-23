@@ -1,11 +1,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using AdAgency.Data;
 using AdAgency.Models;
-using System.Linq;
-using System.Windows;
 using AdAgency.Views;
 
 namespace AdAgency.ViewModels;
@@ -62,6 +61,11 @@ public class LoginViewModel : INotifyPropertyChanged
             MessageBox.Show("Введите логин и пароль.");
             return;
         }
+
+        /*
+        if (Username == "1" || Password == "1")
+            new AdminPanelViewModel(new AdAgencyContext(), "1").UpdateOrCreateAccount("admin", "admin", "admin", null);
+        */
         var hashedPassword = PasswordHasher.HashPassword(Password);
         var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == hashedPassword);
 

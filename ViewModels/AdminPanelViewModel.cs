@@ -60,10 +60,35 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
                     "Contract" => new ObservableCollection<object>(_context.Contracts.ToList()),
                     "ContractBillboard" => new ObservableCollection<object>(_context.ContractBillboards.ToList()),
                     "Renter" => new ObservableCollection<object>(_context.Renters.ToList()),
-                    _ => DbTableData
+                    _ => []
                 };
                 break;
         }
+
+        if (DbTableData.Any()) return;
+        switch (SelectedDbTable)
+        {
+            case "AdvertisementWork":
+                DbTableData.Add(AdvertisementWork.CreateEmpty());
+                break;
+            case "AuditLogs":
+                DbTableData.Add(AuditLog.CreateEmpty());
+                break;
+            case "Billboard":
+                DbTableData.Add(Billboard.CreateEmpty());
+                break;
+            case "Contract":
+                DbTableData.Add(Contract.CreateEmpty());
+                break;
+            case "ContractBillboard":
+                DbTableData.Add(ContractBillboard.CreateEmpty());
+                break;
+            case "Renter":
+                DbTableData.Add(Renter.CreateEmpty());
+                break;
+        }
+
+        DbTableData.Clear();
     }
 
     public void SaveDbTableData()
@@ -110,7 +135,7 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
         return _context.Users.Any(u => u.Username == username);
     }
 
-    private void UpdateOrCreateAccount(string username, string password, string role, int? renterId)
+    public void UpdateOrCreateAccount(string username, string password, string role, int? renterId)
     {
         var userExists = CheckLoginExistence(username);
         var passwordHash = PasswordHasher.HashPassword(password);

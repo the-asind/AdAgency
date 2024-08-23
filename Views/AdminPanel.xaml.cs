@@ -7,8 +7,10 @@ namespace AdAgency.Views;
 
 public partial class AdminPanel : Window
 {
+    private readonly string _username;
     public AdminPanel(string username)
     {
+        _username = username;
         InitializeComponent();
         var context = new AdAgencyContext();
         DataContext = new AdminPanelViewModel(context, username);
@@ -33,5 +35,15 @@ public partial class AdminPanel : Window
         if (renterID.Text != "")
             renterId = int.Parse(renterID.Text);
         ((AdminPanelViewModel)DataContext).CreateAccount(username, password, role, renterId);
+    }
+
+    private void BackToMain_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_username == null) return;
+        var mainWindow = new MainView(_username);
+        mainWindow.Show();
+        if (Application.Current.MainWindow != null)
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = mainWindow;
     }
 }

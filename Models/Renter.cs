@@ -29,5 +29,22 @@ public class Renter
                $"Номер счета в банке: {BankAccountNumber}\n" +
                $"ИНН арендатора: {Inn}";
     }
+
+    public static Renter CreateEmpty()
+    {
+        return new Renter
+        {
+            Name = "",
+            Status = "",
+            LegalAddress = "",
+            DirectorName = "",
+            DirectorPhone = "",
+            ContactPersonName = "",
+            ContactPersonPhone = "",
+            BankName = "",
+            BankAccountNumber = "",
+            Inn = ""
+        };
+    }
 }
 

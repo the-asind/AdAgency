@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdAgency.Models
@@ -25,6 +23,22 @@ namespace AdAgency.Models
         {
             ContractBillboards = new List<ContractBillboard>();
             AdvertisementWorks = new List<AdvertisementWork>();
+        }
+
+        public static Contract CreateEmpty()
+        {
+            return new Contract
+            {
+                ContractNumber = "",
+                SigningDate = DateTime.Now,
+                AgencyResponsible = "",
+                TotalAmount = 0,
+                PaymentType = "",
+                AdditionalTerms = "",
+                Renter = Renter.CreateEmpty(),
+                ContractBillboards = new List<ContractBillboard>(),
+                AdvertisementWorks = new List<AdvertisementWork>()
+            };
         }
     }
 }

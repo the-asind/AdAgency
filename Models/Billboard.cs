@@ -11,4 +11,16 @@ public class Billboard
     public required string Address { get; set; }
     public string? LocationDescription { get; set; }
     public decimal UsefulArea { get; set; }
+
+    public static Billboard CreateEmpty()
+    {
+        return new Billboard
+        {
+            RegistrationNumber = "",
+            CityDistrict = "",
+            Address = "",
+            LocationDescription = "",
+            UsefulArea = 0
+        };
+    }
 }

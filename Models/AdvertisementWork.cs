@@ -10,4 +10,14 @@ public class AdvertisementWork
     public required Contract Contract { get; set; }
     public string? WorkDescription { get; set; }
     public decimal WorkCost { get; set; }
+
+    public static object CreateEmpty()
+    {
+        return new AdvertisementWork
+        {
+            Contract = Contract.CreateEmpty(),
+            WorkDescription = "",
+            WorkCost = 0
+        };
+    }
 }

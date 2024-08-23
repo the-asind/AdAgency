@@ -14,4 +14,14 @@ public class ContractBillboard
     public DateTime RentEndDate { get; set; }
     public decimal RentAmount { get; set; }
     public required byte[] AdvertisementPhoto { get; set; }
+
+    public static object CreateEmpty()
+    {
+        return new ContractBillboard
+        {
+            Contract = Contract.CreateEmpty(),
+            Billboard = Billboard.CreateEmpty(),
+            AdvertisementPhoto = []
+        };
+    }
 }
