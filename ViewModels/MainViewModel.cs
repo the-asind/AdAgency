@@ -126,7 +126,12 @@ namespace AdAgency.ViewModels
 
         private void ConfigureBillboards()
         {
-            // Implement logic to configure billboards
+            if (Username == null) return;
+            var configurePanel = new ConfigurePanel(Username);
+            configurePanel.Show();
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Close();
+            Application.Current.MainWindow = configurePanel;
         }
 
         private bool CanConfigureBillboards() => UserRole.Configurator == Role;
