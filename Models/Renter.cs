@@ -6,7 +6,8 @@ public class Renter
 {
     [Key]
     public int RenterId { get; set; }
-    public required string? Name { get; set; }
+
+    public required string Name { get; set; }
     public required string Status { get; set; }
     public required string LegalAddress { get; set; }
     public required string DirectorName { get; set; }
@@ -16,6 +17,8 @@ public class Renter
     public required string BankName { get; set; }
     public required string BankAccountNumber { get; set; }
     public required string Inn { get; set; }
+
+    public string? Email { get; set; }
     
     public override string ToString()
     {
@@ -27,24 +30,8 @@ public class Renter
                $"Телефон ответственного лица: {ContactPersonPhone}\n" +
                $"Банк арендатора: {BankName}\n" +
                $"Номер счета в банке: {BankAccountNumber}\n" +
-               $"ИНН арендатора: {Inn}";
-    }
-
-    public static Renter CreateEmpty()
-    {
-        return new Renter
-        {
-            Name = "",
-            Status = "",
-            LegalAddress = "",
-            DirectorName = "",
-            DirectorPhone = "",
-            ContactPersonName = "",
-            ContactPersonPhone = "",
-            BankName = "",
-            BankAccountNumber = "",
-            Inn = ""
-        };
+               $"ИНН арендатора: {Inn}" +
+               $"Электронная почта: {Email}";
     }
 }
 

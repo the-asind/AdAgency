@@ -43,6 +43,22 @@ namespace AdAgency.Migrations
                     b.HasIndex("ContractId");
 
                     b.ToTable("AdvertisementWorks");
+
+                    b.HasData(
+                        new
+                        {
+                            WorkId = 1,
+                            ContractId = 1,
+                            WorkCost = 1000m,
+                            WorkDescription = "Work 1"
+                        },
+                        new
+                        {
+                            WorkId = 2,
+                            ContractId = 2,
+                            WorkCost = 2000m,
+                            WorkDescription = "Work 2"
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.AuditLog", b =>
@@ -77,6 +93,26 @@ namespace AdAgency.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AuditLogs");
+
+                    b.HasData(
+                        new
+                        {
+                            LogId = 1,
+                            Action = "Action 1",
+                            RecordId = 1,
+                            TableName = "Table 1",
+                            UserId = 1,
+                            Version = new byte[0]
+                        },
+                        new
+                        {
+                            LogId = 2,
+                            Action = "Action 2",
+                            RecordId = 2,
+                            TableName = "Table 2",
+                            UserId = 2,
+                            Version = new byte[0]
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.Billboard", b =>
@@ -102,12 +138,37 @@ namespace AdAgency.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<decimal>("RentAmountPerWeek")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("UsefulArea")
                         .HasColumnType("numeric");
 
                     b.HasKey("BillboardId");
 
                     b.ToTable("Billboards");
+
+                    b.HasData(
+                        new
+                        {
+                            BillboardId = 1,
+                            Address = "Address 1",
+                            CityDistrict = "District 1",
+                            LocationDescription = "Location 1",
+                            RegistrationNumber = "RN1",
+                            RentAmountPerWeek = 100m,
+                            UsefulArea = 100m
+                        },
+                        new
+                        {
+                            BillboardId = 2,
+                            Address = "Address 2",
+                            CityDistrict = "District 2",
+                            LocationDescription = "Location 2",
+                            RegistrationNumber = "RN2",
+                            RentAmountPerWeek = 200m,
+                            UsefulArea = 200m
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.Contract", b =>
@@ -138,6 +199,10 @@ namespace AdAgency.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("numeric");
 
@@ -146,6 +211,32 @@ namespace AdAgency.Migrations
                     b.HasIndex("RenterId");
 
                     b.ToTable("Contracts");
+
+                    b.HasData(
+                        new
+                        {
+                            ContractId = 1,
+                            AdditionalTerms = "None",
+                            AgencyResponsible = "Agency1",
+                            ContractNumber = "123456",
+                            PaymentType = "Cash",
+                            RenterId = 1,
+                            SigningDate = new byte[] { 178, 66, 86, 169, 207, 201, 220, 136 },
+                            Status = "active",
+                            TotalAmount = 0m
+                        },
+                        new
+                        {
+                            ContractId = 2,
+                            AdditionalTerms = "None",
+                            AgencyResponsible = "Agency2",
+                            ContractNumber = "654321",
+                            PaymentType = "Credit",
+                            RenterId = 2,
+                            SigningDate = new byte[] { 178, 66, 86, 169, 207, 201, 220, 136 },
+                            Status = "cancelled",
+                            TotalAmount = 0m
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.ContractBillboard", b =>
@@ -156,9 +247,9 @@ namespace AdAgency.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("AdvertisementPhoto")
+                    b.Property<string>("AdvertisementPhotoLink")
                         .IsRequired()
-                        .HasColumnType("bytea");
+                        .HasColumnType("text");
 
                     b.Property<int>("BillboardId")
                         .HasColumnType("integer");
@@ -171,13 +262,11 @@ namespace AdAgency.Migrations
 
                     b.Property<byte[]>("RentEndDate")
                         .IsConcurrencyToken()
-                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 
                     b.Property<byte[]>("RentStartDate")
                         .IsConcurrencyToken()
-                        .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 
@@ -188,6 +277,28 @@ namespace AdAgency.Migrations
                     b.HasIndex("ContractId");
 
                     b.ToTable("ContractBillboards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdvertisementPhotoLink = "ftp://AdvertisementPhotoLink",
+                            BillboardId = 1,
+                            ContractId = 1,
+                            RentAmount = 1000m,
+                            RentEndDate = new byte[0],
+                            RentStartDate = new byte[0]
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdvertisementPhotoLink = "ftp://AdvertisementPhotoLink",
+                            BillboardId = 2,
+                            ContractId = 2,
+                            RentAmount = 2000m,
+                            RentEndDate = new byte[0],
+                            RentStartDate = new byte[0]
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.Renter", b =>
@@ -222,6 +333,9 @@ namespace AdAgency.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Inn")
                         .IsRequired()
                         .HasColumnType("text");
@@ -231,6 +345,7 @@ namespace AdAgency.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
@@ -240,6 +355,37 @@ namespace AdAgency.Migrations
                     b.HasKey("RenterId");
 
                     b.ToTable("Renters");
+
+                    b.HasData(
+                        new
+                        {
+                            RenterId = 1,
+                            BankAccountNumber = "Account1",
+                            BankName = "Bank1",
+                            ContactPersonName = "Contact1",
+                            ContactPersonPhone = "Phone1",
+                            DirectorName = "Director1",
+                            DirectorPhone = "Phone1",
+                            Email = "email@1.com",
+                            Inn = "Inn1",
+                            LegalAddress = "Address1",
+                            Name = "Renter1",
+                            Status = "Status1"
+                        },
+                        new
+                        {
+                            RenterId = 2,
+                            BankAccountNumber = "Account2",
+                            BankName = "Bank2",
+                            ContactPersonName = "Contact2",
+                            ContactPersonPhone = "Phone2",
+                            DirectorName = "Director2",
+                            DirectorPhone = "Phone2",
+                            Inn = "Inn2",
+                            LegalAddress = "Address2",
+                            Name = "Renter2",
+                            Status = "Status2"
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.User", b =>
@@ -268,6 +414,24 @@ namespace AdAgency.Migrations
                     b.HasIndex("RenterId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+                            RenterId = 1,
+                            Role = "admin",
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            PasswordHash = "87eba76e7f3164534045ba922e7770fb58bbd14ad732bbf5ba6f11cc56989e6e",
+                            RenterId = 2,
+                            Role = "configurator",
+                            Username = "worker"
+                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.AdvertisementWork", b =>

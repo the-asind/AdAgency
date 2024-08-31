@@ -42,6 +42,7 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
 
     public void LoadDbTableData()
     {
+        if (!AuthenticationService.HasPermission("admin")) Environment.Exit(1);
         switch (SelectedDbTable)
         {
             case null:
@@ -73,36 +74,11 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
                 DbTableData = new ObservableCollection<object>();
                 break;
         }
-
-        if (DbTableData.Any()) return;
-
-        switch (SelectedDbTable)
-        {
-            case "AdvertisementWork":
-                _context.AdvertisementWorks.Add(AdvertisementWork.CreateEmpty());
-                break;
-            case "AuditLogs":
-                _context.AuditLogs.Add(AuditLog.CreateEmpty());
-                break;
-            case "Billboard":
-                _context.Billboards.Add(Billboard.CreateEmpty());
-                break;
-            case "Contract":
-                _context.Contracts.Add(Contract.CreateEmpty());
-                break;
-            case "ContractBillboard":
-                _context.ContractBillboards.Add(ContractBillboard.CreateEmpty());
-                break;
-            case "Renter":
-                _context.Renters.Add(Renter.CreateEmpty());
-                break;
-        }
-
-        _context.SaveChanges();
     }
 
     public void SaveDbTableData()
     {
+        if (!AuthenticationService.HasPermission("admin")) Environment.Exit(1);
         try
         {
             switch (SelectedDbTable)

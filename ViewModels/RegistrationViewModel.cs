@@ -1,12 +1,11 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using AdAgency.Data;
 using AdAgency.Models;
 using AdAgency.Views;
-using System.Text.RegularExpressions;
-using System.Windows.Controls;
 
 namespace AdAgency.ViewModels
 {
@@ -93,6 +92,12 @@ namespace AdAgency.ViewModels
             if (!Regex.IsMatch(DirectorPhone, @"^\+7\d{10}$") || !Regex.IsMatch(ContactPersonPhone, @"^\+7\d{10}$"))
             {
                 MessageBox.Show("Некорректный номер телефона. Номер должен начинаться с +7 и содержать 10 цифр после.");
+                return;
+            }
+
+            if (!Regex.IsMatch(Username, @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"))
+            {
+                MessageBox.Show("Некорректный email. Пожалуйста, введите корректный email.");
                 return;
             }
             

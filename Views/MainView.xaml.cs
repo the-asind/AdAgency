@@ -22,12 +22,14 @@ public partial class MainView : Window
                 ConfiguratorButton.Visibility = Visibility.Collapsed;
                 RenterButton.Visibility = Visibility.Collapsed;
                 renterOutput.Visibility = Visibility.Collapsed;
+                viewModel.LoadAuditLogs();
                 AuditGrid.Visibility = Visibility.Visible;
                 break;
             case MainViewModel.UserRole.Renter:
                 AdminButton.Visibility = Visibility.Collapsed;
                 ConfiguratorButton.Visibility = Visibility.Collapsed;
                 RenterGrid.Visibility = Visibility.Collapsed;
+                BillboardsGrid.Visibility = Visibility.Collapsed;
                 break;
             case MainViewModel.UserRole.Configurator:
                 AdminButton.Visibility = Visibility.Collapsed;

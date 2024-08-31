@@ -30,6 +30,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
     public ConfigurePanelViewModel(AdAgencyContext context, string username)
     {
         _context = context;
+        if (!AuthenticationService.HasPermission("configurator")) Environment.Exit(1);
         Billboard = new Billboard
         {
             RegistrationNumber = "",
@@ -42,6 +43,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
 
     private void CreateBillboard()
     {
+        if (!AuthenticationService.HasPermission("configurator")) Environment.Exit(1);
         if (string.IsNullOrWhiteSpace(Billboard.RegistrationNumber) ||
             string.IsNullOrWhiteSpace(Billboard.CityDistrict) ||
             string.IsNullOrWhiteSpace(Billboard.Address))

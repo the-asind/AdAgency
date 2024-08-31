@@ -8,144 +8,166 @@ using AdAgency.Models;
 using AdAgency.Views;
 using Microsoft.EntityFrameworkCore;
 
-namespace AdAgency.ViewModels
+namespace AdAgency.ViewModels;
+
+public class MainViewModel : INotifyPropertyChanged
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public enum UserRole
     {
-        public enum UserRole
+        Admin,
+        Renter,
+        Configurator
+    }
+
+    private UserRole _role;
+
+    public UserRole Role
+    {
+        get => _role;
+        set
         {
-            Admin,
-            Renter,
-            Configurator
+            _role = value;
+            OnPropertyChanged();
         }
-        
-        private UserRole _role;
+    }
 
-        public UserRole Role
+    private ObservableCollection<Billboard>? _availableBillboards;
+    private readonly AdAgencyContext _context;
+
+    public ObservableCollection<Billboard>? AvailableBillboards
+    {
+        get => _availableBillboards;
+        set
         {
-            get => _role;
-            set
-            {
-                _role = value;
-                OnPropertyChanged();
-            }
+            _availableBillboards = value;
+            OnPropertyChanged();
         }
-        
-        private ObservableCollection<Billboard>? _availableBillboards;
-        private AdAgencyContext _context;
+    }
 
-        public ObservableCollection<Billboard>? AvailableBillboards
+    public ICommand? OrderBillboardCommand { get; }
+
+    private string? _username;
+
+    public string? Username
+    {
+        get => _username;
+        set
         {
-            get => _availableBillboards;
-            set
-            {
-                _availableBillboards = value;
-                OnPropertyChanged();
-            }
+            _username = value;
+            OnPropertyChanged();
         }
+    }
 
-        public ICommand OrderBillboardCommand { get; }
+    public ObservableCollection<Renter>? RenterInfo { get; set; }
+    public ObservableCollection<ContractBillboard>? ContractsBillboards { get; set; }
+    public ObservableCollection<Contract>? Contracts { get; set; }
+    public ObservableCollection<AdvertisementWork>? AdvertisementWorks { get; set; }
 
-        private string? _username;
-        public string? Username
+    public ICommand? AdminPanelCommand { get; set; }
+    public ICommand? ConfigureBillboardsCommand { get; set; }
+
+    private string? _renterOutput;
+
+    public string? RenterOutput
+    {
+        get => _renterOutput;
+        set
         {
-            get => _username;
-            set
-            {
-                _username = value;
-                OnPropertyChanged();
-            }
+            _renterOutput = value;
+            OnPropertyChanged();
         }
+    }
 
-        private Renter? RenterInfo { get; set; }
-        public ObservableCollection<ContractBillboard>? ContractsBillboards { get; set; }
-        public ObservableCollection<Contract>? Contracts { get; set; }
-        public ObservableCollection<AdvertisementWork>? AdvertisementWorks { get; set; }
+    public MainViewModel(AdAgencyContext context, string username)
+    {
+        _context = context;
+        Username = username;
 
-        public ICommand AdminPanelCommand { get; set; }
-        public ICommand ConfigureBillboardsCommand { get; set; }
-        
-        private string _renterOutput;
-        public string RenterOutput
+        var user = _context.Users.Include(user => user.Renter).FirstOrDefault(u => u.Username == username);
+        Role = user?.Role switch
         {
-            get => _renterOutput;
-            set
-            {
-                _renterOutput = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public MainViewModel(AdAgencyContext context, string username)
+            "admin" => UserRole.Admin,
+            "renter" => UserRole.Renter,
+            "configurator" => UserRole.Configurator,
+            _ => throw new Exception("Invalid user role")
+        };
+
+        if (UserRole.Renter == Role)
         {
-            _context = context;
-            LoadBillboards();
             OrderBillboardCommand = new RelayCommand(OrderBillboard);
-            AdminPanelCommand = new RelayCommand(OpenAdminPanel, CanOpenAdminPanel);
-            ConfigureBillboardsCommand = new RelayCommand(ConfigureBillboards, CanConfigureBillboards);
-            Username = username;    
-            
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
-            Role = user?.Role switch
-            {
-                "admin" => UserRole.Admin,
-                "renter" => UserRole.Renter,
-                "configurator" => UserRole.Configurator,
-                _ => throw new Exception("Invalid user role")
-            };
-            
-            RenterInfo = _context.Renters.AsEnumerable().FirstOrDefault(r => r.RenterId == user?.RenterId);
-            ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
-                .Include(contractBillboard => contractBillboard.Contract).AsEnumerable().Where(cb => RenterInfo != null && cb.Contract.RenterId == RenterInfo.RenterId).ToList());
-            Contracts = new ObservableCollection<Contract>(_context.Contracts.AsEnumerable().Where(c => RenterInfo != null && c.RenterId == RenterInfo.RenterId).ToList());
-            //AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.AsEnumerable().Where(aw => RenterInfo != null && aw.Contract.RenterId == RenterInfo.RenterId).ToList());
-            AdvertisementWorks =
-                new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.OfType<AdvertisementWork>()
-                    .ToList());
             RenterOutput = user.Renter?.ToString() ?? "Информация об арендаторе отсутствует";
-
-            
+            Contracts = new ObservableCollection<Contract>(_context.Contracts.Where(c => c.RenterId == user.RenterId)
+                .ToList());
+            ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
+                .Where(cb => cb.Contract != null && cb.Contract.RenterId == user.RenterId).ToList());
+            return;
         }
 
-        private void LoadBillboards()
+        RenterInfo = new ObservableCollection<Renter>(_context.Renters.ToList());
+        AdminPanelCommand = new RelayCommand(OpenAdminPanel, CanOpenAdminPanel);
+        ConfigureBillboardsCommand = new RelayCommand(ConfigureBillboards, CanConfigureBillboards);
+        ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards.ToList());
+        Contracts = new ObservableCollection<Contract>(_context.Contracts.ToList());
+        AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.ToList());
+    }
+
+    private void OpenAdminPanel()
+    {
+        if (!AuthenticationService.HasPermission("admin")) Environment.Exit(1);
+        if (Username == null) return;
+        var adminPanel = new AdminPanel(Username);
+        adminPanel.Show();
+        if (Application.Current.MainWindow != null)
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = adminPanel;
+    }
+
+    private bool CanOpenAdminPanel()
+    {
+        return AuthenticationService.HasPermission("admin");
+    }
+
+    private void ConfigureBillboards()
+    {
+        if (Username == null) return;
+        var configurePanel = new ConfigurePanel(Username);
+        configurePanel.Show();
+        if (Application.Current.MainWindow != null)
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = configurePanel;
+    }
+
+    private bool CanConfigureBillboards()
+    {
+        return AuthenticationService.HasPermission("configurator");
+    }
+
+    private void OrderBillboard()
+    {
+        // Implement logic to order a billboard
+    }
+
+    private ObservableCollection<AuditLog>? _auditLogs;
+
+    public ObservableCollection<AuditLog>? AuditLogs
+    {
+        get => _auditLogs;
+        set
         {
-            AvailableBillboards = new ObservableCollection<Billboard>(_context.Billboards.ToList());
+            _auditLogs = value;
+            OnPropertyChanged();
         }
+    }
 
-        private void OpenAdminPanel()
-        {
-            if (Username == null) return;
-            var adminPanel = new AdminPanel(Username);
-            adminPanel.Show();
-            if (Application.Current.MainWindow != null) 
-                Application.Current.MainWindow.Close();
-            Application.Current.MainWindow = adminPanel;
-        }
-        
-        private bool CanOpenAdminPanel() => UserRole.Admin == Role;
+    public void LoadAuditLogs()
+    {
+        AuditLogs = new ObservableCollection<AuditLog>(_context.AuditLogs.ToList());
+    }
 
-        private void ConfigureBillboards()
-        {
-            if (Username == null) return;
-            var configurePanel = new ConfigurePanel(Username);
-            configurePanel.Show();
-            if (Application.Current.MainWindow != null)
-                Application.Current.MainWindow.Close();
-            Application.Current.MainWindow = configurePanel;
-        }
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-        private bool CanConfigureBillboards() => UserRole.Configurator == Role;
-
-        private void OrderBillboard()
-        {
-            // Implement logic to order a billboard
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

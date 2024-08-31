@@ -3,6 +3,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AdAgency.Migrations
 {
     /// <inheritdoc />
@@ -21,7 +23,8 @@ namespace AdAgency.Migrations
                     CityDistrict = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
                     LocationDescription = table.Column<string>(type: "text", nullable: true),
-                    UsefulArea = table.Column<decimal>(type: "numeric", nullable: false)
+                    UsefulArea = table.Column<decimal>(type: "numeric", nullable: false),
+                    RentAmountPerWeek = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +37,7 @@ namespace AdAgency.Migrations
                 {
                     RenterId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     LegalAddress = table.Column<string>(type: "text", nullable: false),
                     DirectorName = table.Column<string>(type: "text", nullable: false),
@@ -43,7 +46,8 @@ namespace AdAgency.Migrations
                     ContactPersonPhone = table.Column<string>(type: "text", nullable: false),
                     BankName = table.Column<string>(type: "text", nullable: false),
                     BankAccountNumber = table.Column<string>(type: "text", nullable: false),
-                    Inn = table.Column<string>(type: "text", nullable: false)
+                    Inn = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,12 +61,13 @@ namespace AdAgency.Migrations
                     ContractId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ContractNumber = table.Column<string>(type: "text", nullable: true),
-                    SigningDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
+                    SigningDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
                     AgencyResponsible = table.Column<string>(type: "text", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     PaymentType = table.Column<string>(type: "text", nullable: true),
                     AdditionalTerms = table.Column<string>(type: "text", nullable: true),
-                    RenterId = table.Column<int>(type: "integer", nullable: false)
+                    RenterId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,10 +130,10 @@ namespace AdAgency.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ContractId = table.Column<int>(type: "integer", nullable: false),
                     BillboardId = table.Column<int>(type: "integer", nullable: false),
-                    RentStartDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
-                    RentEndDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
+                    RentStartDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
+                    RentEndDate = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true),
                     RentAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    AdvertisementPhoto = table.Column<byte[]>(type: "bytea", nullable: false)
+                    AdvertisementPhotoLink = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -157,7 +162,7 @@ namespace AdAgency.Migrations
                     Action = table.Column<string>(type: "text", nullable: false),
                     TableName = table.Column<string>(type: "text", nullable: false),
                     RecordId = table.Column<int>(type: "integer", nullable: true),
-                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false)
+                    Version = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -168,6 +173,69 @@ namespace AdAgency.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Billboards",
+                columns: new[] { "BillboardId", "Address", "CityDistrict", "LocationDescription", "RegistrationNumber", "RentAmountPerWeek", "UsefulArea" },
+                values: new object[,]
+                {
+                    { 1, "Address 1", "District 1", "Location 1", "RN1", 100m, 100m },
+                    { 2, "Address 2", "District 2", "Location 2", "RN2", 200m, 200m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Renters",
+                columns: new[] { "RenterId", "BankAccountNumber", "BankName", "ContactPersonName", "ContactPersonPhone", "DirectorName", "DirectorPhone", "Email", "Inn", "LegalAddress", "Name", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Account1", "Bank1", "Contact1", "Phone1", "Director1", "Phone1", "email@1.com", "Inn1", "Address1", "Renter1", "Status1" },
+                    { 2, "Account2", "Bank2", "Contact2", "Phone2", "Director2", "Phone2", null, "Inn2", "Address2", "Renter2", "Status2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Contracts",
+                columns: new[] { "ContractId", "AdditionalTerms", "AgencyResponsible", "ContractNumber", "PaymentType", "RenterId", "Status", "TotalAmount" },
+                values: new object[,]
+                {
+                    { 1, "None", "Agency1", "123456", "Cash", 1, "active", 0m },
+                    { 2, "None", "Agency2", "654321", "Credit", 2, "cancelled", 0m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "PasswordHash", "RenterId", "Role", "Username" },
+                values: new object[,]
+                {
+                    { 1, "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", 1, "admin", "admin" },
+                    { 2, "87eba76e7f3164534045ba922e7770fb58bbd14ad732bbf5ba6f11cc56989e6e", 2, "configurator", "worker" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AdvertisementWorks",
+                columns: new[] { "WorkId", "ContractId", "WorkCost", "WorkDescription" },
+                values: new object[,]
+                {
+                    { 1, 1, 1000m, "Work 1" },
+                    { 2, 2, 2000m, "Work 2" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AuditLogs",
+                columns: new[] { "LogId", "Action", "RecordId", "TableName", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "Action 1", 1, "Table 1", 1 },
+                    { 2, "Action 2", 2, "Table 2", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ContractBillboards",
+                columns: new[] { "Id", "AdvertisementPhotoLink", "BillboardId", "ContractId", "RentAmount" },
+                values: new object[,]
+                {
+                    { 1, "ftp://AdvertisementPhotoLink", 1, 1, 1000m },
+                    { 2, "ftp://AdvertisementPhotoLink", 2, 2, 2000m }
                 });
 
             migrationBuilder.CreateIndex(
