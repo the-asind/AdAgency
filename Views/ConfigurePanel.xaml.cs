@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using AdAgency.Data;
@@ -28,6 +29,13 @@ public partial class ConfigurePanel : Window
 
     private void UsefulArea_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        if (!double.TryParse(e.Text, out _)) e.Handled = true;
+        var regex = new Regex("[^0-9.]+"); //regex that matches disallowed text
+        e.Handled = regex.IsMatch(e.Text);
+    }
+
+    private void RentAmountPerWeek_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        var regex = new Regex("[^0-9.]+"); //regex that matches disallowed text
+        e.Handled = regex.IsMatch(e.Text);
     }
 }

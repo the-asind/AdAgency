@@ -20,6 +20,7 @@
                     <DataGridTextColumn Binding="{Binding Address}" Header="Адрес" />
                     <DataGridTextColumn Binding="{Binding LocationDescription}" Header="Описание местоположения" />
                     <DataGridTextColumn Binding="{Binding UsefulArea}" Header="Полезная площадь" />
+                    <DataGridTextColumn Binding="{Binding RentAmountPerWeek}" Header="Стоимость аренды в неделю" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label Content="Создание и редактирование щитов" HorizontalAlignment="Center" FontSize="20"
@@ -35,6 +36,9 @@
             <Label Content="Полезная площадь*: (км)" />
             <TextBox x:Name="UsefulArea" PreviewTextInput="UsefulArea_PreviewTextInput"
                      Text="{Binding Billboard.UsefulArea}" Margin="5,-5,0,5" />
+            <Label Content="Стоимость аренды в неделю*: (рубли)" />
+            <TextBox x:Name="RentAmountPerWeek" PreviewTextInput="RentAmountPerWeek_PreviewTextInput"
+                     Text="{Binding Billboard.RentAmountPerWeek}" Margin="5,-5,0,5" />
             <Button Content="Применить" Margin="5" Command="{Binding CreateBillboardCommand}" />
             <Label Content="Если регистрационный номер уже существует, то рекламный щит будет обновлён."
                    HorizontalAlignment="Center" />

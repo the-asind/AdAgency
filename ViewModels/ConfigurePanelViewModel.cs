@@ -22,7 +22,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    
     public ObservableCollection<Billboard> Billboards { get; }
 
     public ICommand CreateBillboardCommand { get; }
@@ -35,7 +35,8 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
         {
             RegistrationNumber = "",
             CityDistrict = "",
-            Address = ""
+            Address = "",
+            RentAmountPerWeek = 0
         };
         Billboards = new ObservableCollection<Billboard>(_context.Billboards.ToList());
         CreateBillboardCommand = new RelayCommand(CreateBillboard);
@@ -46,7 +47,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
         if (!AuthenticationService.HasPermission("configurator")) Environment.Exit(1);
         if (string.IsNullOrWhiteSpace(Billboard.RegistrationNumber) ||
             string.IsNullOrWhiteSpace(Billboard.CityDistrict) ||
-            string.IsNullOrWhiteSpace(Billboard.Address))
+            string.IsNullOrWhiteSpace(Billboard.Address) || Billboard.RentAmountPerWeek == 0)
         {
             MessageBox.Show("Не были заполнены обязательные поля", "Ошибка", MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
@@ -62,6 +63,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
             existingBillboard.Address = Billboard.Address;
             existingBillboard.LocationDescription = Billboard.LocationDescription;
             existingBillboard.UsefulArea = Billboard.UsefulArea;
+            existingBillboard.RentAmountPerWeek = Billboard.RentAmountPerWeek;
         }
         else
         {
@@ -75,10 +77,16 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
         {
             RegistrationNumber = "",
             CityDistrict = "",
-            Address = ""
+            Address = "",
+            RentAmountPerWeek = 0
         };
     }
 
+    private bool IsValidDecimal(string input)
+    {
+        return decimal.TryParse(input, out _);
+    }
+    
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
