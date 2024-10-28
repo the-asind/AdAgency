@@ -30,6 +30,7 @@ public partial class MainView : Window
                 ConfiguratorButton.Visibility = Visibility.Collapsed;
                 RenterGrid.Visibility = Visibility.Collapsed;
                 BillboardsGrid.Visibility = Visibility.Collapsed;
+                RentersBillboardsGrid.Visibility = Visibility.Visible;
                 break;
             case MainViewModel.UserRole.Configurator:
                 AdminButton.Visibility = Visibility.Collapsed;

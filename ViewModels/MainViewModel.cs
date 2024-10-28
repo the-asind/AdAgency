@@ -44,8 +44,6 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public ICommand? OrderBillboardCommand { get; }
-
     private string? _username;
 
     public string? Username
@@ -63,6 +61,10 @@ public class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<Contract>? Contracts { get; set; }
     public ObservableCollection<AdvertisementWork>? AdvertisementWorks { get; set; }
 
+    public ObservableCollection<ContractBillboard>? RentersContractsBillboards { get; set; }
+    public ObservableCollection<Contract>? RentersContracts { get; set; }
+    public ObservableCollection<AdvertisementWork>? RentersAdvertisementWorks { get; set; }
+
     public ICommand? AdminPanelCommand { get; set; }
     public ICommand? ConfigureBillboardsCommand { get; set; }
 
@@ -77,6 +79,8 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public ICommand? OpenRenterPanelCommand { get; }
 
     public MainViewModel(AdAgencyContext context, string username)
     {
@@ -94,12 +98,14 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (UserRole.Renter == Role)
         {
-            OrderBillboardCommand = new RelayCommand(OrderBillboard);
             RenterOutput = user.Renter?.ToString() ?? "Информация об арендаторе отсутствует";
-            Contracts = new ObservableCollection<Contract>(_context.Contracts.Where(c => c.RenterId == user.RenterId)
-                .ToList());
-            ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
+            RentersContracts =
+                new ObservableCollection<Contract>(_context.Contracts.Where(c => c.RenterId == user.RenterId).ToList());
+            RentersContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards
                 .Where(cb => cb.Contract != null && cb.Contract.RenterId == user.RenterId).ToList());
+            RentersAdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks
+                .Where(aw => aw.Contract != null && aw.Contract.RenterId == user.RenterId).ToList());
+            OpenRenterPanelCommand = new RelayCommand(OpenRenterPanel);
             return;
         }
 
@@ -142,9 +148,14 @@ public class MainViewModel : INotifyPropertyChanged
         return AuthenticationService.HasPermission("configurator");
     }
 
-    private void OrderBillboard()
+    private void OpenRenterPanel()
     {
-        // Implement logic to order a billboard
+        if (Username == null) return;
+        var renterPanel = new RenterPanel(Username);
+        renterPanel.Show();
+        if (Application.Current.MainWindow != null)
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = renterPanel;
     }
 
     private ObservableCollection<AuditLog>? _auditLogs;

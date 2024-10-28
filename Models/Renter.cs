@@ -30,7 +30,7 @@ public class Renter
                $"Телефон ответственного лица: {ContactPersonPhone}\n" +
                $"Банк арендатора: {BankName}\n" +
                $"Номер счета в банке: {BankAccountNumber}\n" +
-               $"ИНН арендатора: {Inn}" +
+               $"ИНН арендатора: {Inn}\n" +
                $"Электронная почта: {Email}";
     }
 }

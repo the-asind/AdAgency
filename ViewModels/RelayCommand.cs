@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 
 namespace AdAgency
@@ -28,6 +27,11 @@ namespace AdAgency
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

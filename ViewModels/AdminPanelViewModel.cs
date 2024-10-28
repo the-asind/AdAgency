@@ -84,31 +84,31 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
             switch (SelectedDbTable)
             {
                 case "AdvertisementWork":
-                    foreach (AdvertisementWork item in DbTableData)
+                    foreach (var item in DbTableData.Cast<AdvertisementWork>())
                         _context.Entry(item).State = item.WorkId == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "AuditLogs":
-                    foreach (AuditLog item in DbTableData)
+                    foreach (var item in DbTableData.Cast<AuditLog>())
                         _context.Entry(item).State = item.LogId == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "Billboard":
-                    foreach (Billboard item in DbTableData)
+                    foreach (var item in DbTableData.Cast<Billboard>())
                         _context.Entry(item).State = item.BillboardId == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "Contract":
-                    foreach (Contract item in DbTableData)
+                    foreach (var item in DbTableData.Cast<Contract>())
                         _context.Entry(item).State = item.ContractId == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "ContractBillboard":
-                    foreach (ContractBillboard item in DbTableData)
+                    foreach (var item in DbTableData.Cast<ContractBillboard>())
                         _context.Entry(item).State = item.Id == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "Renter":
-                    foreach (Renter item in DbTableData)
+                    foreach (var item in DbTableData.Cast<Renter>())
                         _context.Entry(item).State = item.RenterId == 0 ? EntityState.Added : EntityState.Modified;
                     break;
                 case "User":
-                    foreach (User item in DbTableData)
+                    foreach (var item in DbTableData.Cast<User>())
                         _context.Entry(item).State = item.UserId == 0 ? EntityState.Added : EntityState.Modified;
                     MessageBox.Show("Вы вручную изменили таблицу пользователей. Пожалуйста, перезайдите.");
                     Environment.Exit(0);
