@@ -25,7 +25,7 @@ public class RenterPanelViewModel : INotifyPropertyChanged
     public ObservableCollection<Billboard> AvailableBillboards { get; private set; }
     public ICommand BuyBillboardCommand { get; }
 
-    public Billboard SelectedBillboard
+    public Billboard? SelectedBillboard
     {
         get => _selectedBillboard;
         set
@@ -99,10 +99,10 @@ public class RenterPanelViewModel : INotifyPropertyChanged
 
     private readonly string _username;
 
-    private string _advertisementPhotoLink;
+    private string _advertisementPhotoLink = string.Empty;
     private bool _isAdvertisementPhotoLinkValid;
-    private string _paymentType;
-    private string _additionalTerms;
+    private string _paymentType = string.Empty;
+    private string _additionalTerms = string.Empty;
 
     public string AdvertisementPhotoLink
     {
@@ -185,6 +185,7 @@ public class RenterPanelViewModel : INotifyPropertyChanged
 
     private void CalculateRentCost()
     {
+        if (SelectedBillboard == null || !RentStartDate.HasValue || !RentEndDate.HasValue) return;
         if (RentDurationWeeks > 0)
         {
             RentCost = SelectedBillboard.RentAmountPerWeek * RentDurationWeeks;
@@ -207,12 +208,12 @@ public class RenterPanelViewModel : INotifyPropertyChanged
         var availableBillboards = _context.Billboards
             .Where(b => !_context.ContractBillboards.Any(cb =>
                 cb.BillboardId == b.BillboardId &&
-                ((DateTime.FromBinary(BitConverter.ToInt64(cb.RentStartDate, 0)) <= startDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(cb.RentEndDate, 0)) >= startDate) ||
-                 (DateTime.FromBinary(BitConverter.ToInt64(cb.RentStartDate, 0)) <= endDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(cb.RentEndDate, 0)) >= endDate) ||
-                 (DateTime.FromBinary(BitConverter.ToInt64(cb.RentStartDate, 0)) >= startDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(cb.RentEndDate, 0)) <= endDate))))
+                ((DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) <= startDate &&
+                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) >= startDate) ||
+                 (DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) <= endDate &&
+                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) >= endDate) ||
+                 (DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) >= startDate &&
+                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) <= endDate))))
             .ToList();
 
         AvailableBillboards = new ObservableCollection<Billboard>(availableBillboards);
@@ -246,14 +247,15 @@ public class RenterPanelViewModel : INotifyPropertyChanged
     private void BuyBillboard()
     {
         if (SelectedBillboard == null || !RentStartDate.HasValue || !RentEndDate.HasValue ||
-            !IsAdvertisementPhotoLinkValid) return;
+            !IsAdvertisementPhotoLinkValid)
+            return;
 
         var contractNumber = $"{SelectedBillboard.RegistrationNumber}-{_context.Contracts.Count() + 1:D6}";
 
         var contract = new Contract
         {
             RenterId = _renterId,
-            SigningDate = BitConverter.GetBytes(DateTime.Now.ToBinary()),
+            SigningDate = DateTime.UtcNow,
             AgencyResponsible = "Василий Гальперов Анатольевич",
             Status = "active",
             TotalAmount = RentCostTotal,
@@ -269,32 +271,20 @@ public class RenterPanelViewModel : INotifyPropertyChanged
         {
             ContractId = contract.ContractId,
             BillboardId = SelectedBillboard.BillboardId,
-            RentStartDate = BitConverter.GetBytes(RentStartDate.Value.ToBinary()),
-            RentEndDate = BitConverter.GetBytes(RentEndDate.Value.ToBinary()),
-            RentAmount = RentCost,
+            RentStartDate = RentStartDate?.ToUniversalTime(),
+            RentEndDate = RentEndDate?.ToUniversalTime(),
+            RentAmount = RentCostTotal,
             AdvertisementPhotoLink = AdvertisementPhotoLink
         };
 
         _context.ContractBillboards.Add(contractBillboard);
-
-        var installationWork = new AdvertisementWork
-        {
-            ContractId = contract.ContractId,
-            WorkDescription = $"Монтаж биллборда {SelectedBillboard.RegistrationNumber} для {_renterName}",
-            WorkCost = 3000
-        };
-
-        var dismantlingWork = new AdvertisementWork
-        {
-            ContractId = contract.ContractId,
-            WorkDescription = $"Демонтаж биллборда {SelectedBillboard.RegistrationNumber} для {_renterName}",
-            WorkCost = 2000
-        };
-
-        _context.AdvertisementWorks.AddRange(installationWork, dismantlingWork);
         _context.SaveChanges();
 
-        MessageBox.Show($"Рекламный щит {SelectedBillboard.RegistrationNumber} оформлен успешно!");
+        MessageBox.Show("Рекламный щит оформлен успешно!\n" +
+                        $"Номер договора: {contractNumber}\n" +
+                        $"Стоимость аренды: {RentCostTotal} руб.\n" +
+                        $"Дата начала аренды: {RentStartDate.Value:dd.MM.yyyy}\n" +
+                        $"Дата окончания аренды: {RentEndDate.Value:dd.MM.yyyy}");
     }
 
     private bool CanBuyBillboard()

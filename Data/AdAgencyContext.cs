@@ -42,9 +42,7 @@ public class AdAgencyContext : DbContext
             .WithMany()
             .HasForeignKey(u => u.RenterId);
 
-        var now = DateTime.Now;
-        var longTime = now.ToBinary();
-        var bytes = BitConverter.GetBytes(longTime);
+        var now = DateTime.UtcNow;
 
         var renter1 = new Renter
         {
@@ -61,12 +59,12 @@ public class AdAgencyContext : DbContext
 
         var contract1 = new Contract
         {
-            ContractId = 1, RenterId = renter1.RenterId, SigningDate = bytes, PaymentType = "Cash",
+            ContractId = 1, RenterId = renter1.RenterId, SigningDate = now, PaymentType = "Cash",
             ContractNumber = "123456", AgencyResponsible = "Agency1", AdditionalTerms = "None", Status = "active"
         };
         var contract2 = new Contract
         {
-            ContractId = 2, RenterId = renter2.RenterId, SigningDate = bytes, PaymentType = "Credit",
+            ContractId = 2, RenterId = renter2.RenterId, SigningDate = now, PaymentType = "Credit",
             ContractNumber = "654321", AgencyResponsible = "Agency2", AdditionalTerms = "None", Status = "cancelled"
         };
 
@@ -106,14 +104,14 @@ public class AdAgencyContext : DbContext
         var contractBillboard1 = new ContractBillboard
         {
             Id = 1, ContractId = contract1.ContractId, BillboardId = billboard1.BillboardId,
-            RentStartDate = new byte[0], RentEndDate = new byte[0], RentAmount = 1000,
-            AdvertisementPhotoLink = "ftp://AdvertisementPhotoLink"
+            RentStartDate = DateTime.UtcNow, RentEndDate = DateTime.UtcNow.AddDays(21), RentAmount = 1000,
+            AdvertisementPhotoLink = "https://mods.store.gx.me/mod/32027713-3e24-46ea-98d2-708f13991e17/cover/5b8f3267-3ad1-444e-8f75-83bab0a48848/webp-640x360?4b8390341bc39300397de58b9cb17301"
         };
         var contractBillboard2 = new ContractBillboard
         {
             Id = 2, ContractId = contract2.ContractId, BillboardId = billboard2.BillboardId,
-            RentStartDate = new byte[0], RentEndDate = new byte[0], RentAmount = 2000,
-            AdvertisementPhotoLink = "ftp://AdvertisementPhotoLink"
+            RentStartDate = DateTime.UtcNow, RentEndDate = DateTime.UtcNow.AddDays(14), RentAmount = 2000,
+            AdvertisementPhotoLink = "https://avatars.mds.yandex.net/get-mpic/4880383/img_id745194673364714228.jpeg/orig"
         };
 
         modelBuilder.Entity<Renter>().HasData(renter1, renter2);
