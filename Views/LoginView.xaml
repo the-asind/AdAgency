@@ -1,12 +1,16 @@
 <Window x:Class="AdAgency.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         MinHeight="300" MinWidth="300" WindowStartupLocation="CenterScreen"
         Title="Вход в систему" Height="300" Width="300" Icon="pack://application:,,,/Resources/icon.ico">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox Width="200" Margin="5" Text="{Binding Username}" Tag="Username"/>
-            <PasswordBox x:Name="PasswordBox" Width="200" Margin="5"/>
+            <Label Content="Рекламное агентство" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="10" />
+            <TextBox Width="200" Margin="5" Text="{Binding Username}" Tag="Username"
+                     materialDesign:HintAssist.Hint="Логин" />
+            <PasswordBox x:Name="PasswordBox" Width="200" Margin="5"
+                         materialDesign:HintAssist.Hint="Пароль" />
             <Button Width="200" Margin="5" Content="Войти" Command="{Binding LoginCommand}" />
             <Button Width="200" Margin="5" Content="Зарегистрироваться" Command="{Binding RegisterCommand}"
                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />

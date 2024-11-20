@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Title="ConfigurePanel" MinHeight="720" MinWidth="640" Icon="pack://application:,,,/Resources/icon.ico">
+        Title="Панель конфигурации рекламных щитов" MinHeight="720" MinWidth="640"
+        Icon="pack://application:,,,/Resources/icon.ico">
     <Grid Margin="10" HorizontalAlignment="Center" VerticalAlignment="Stretch">
         <Button Content="Вернуться в главное меню" HorizontalAlignment="Center" Click="BackToMainMenu_Click"
                 VerticalAlignment="Top"
@@ -26,18 +28,24 @@
             <Label Content="Создание и редактирование щитов" HorizontalAlignment="Center" FontSize="20"
                    Margin="15,15,15,0" FontWeight="Bold" />
             <Label Content="Регистрационный номер*:" />
-            <TextBox x:Name="RegistrationNumber" Text="{Binding Billboard.RegistrationNumber}" Margin="5,-5,0,5" />
+            <TextBox x:Name="RegistrationNumber" Text="{Binding Billboard.RegistrationNumber}" Margin="5,-5,0,5"
+                     materialDesign:HintAssist.Hint="АА-00001" />
             <Label Content="Район города*:" />
-            <TextBox x:Name="CityDistrict" Text="{Binding Billboard.CityDistrict}" Margin="5,-5,0,5" />
+            <TextBox x:Name="CityDistrict" Text="{Binding Billboard.CityDistrict}" Margin="5,-5,0,5"
+                     materialDesign:HintAssist.Hint="Ленинский" />
             <Label Content="Адрес*:" />
-            <TextBox x:Name="Address" Text="{Binding Billboard.Address}" Margin="5,-5,0,5" />
+            <TextBox x:Name="Address" Text="{Binding Billboard.Address}" Margin="5,-5,0,5"
+                     materialDesign:HintAssist.Hint="ул. Пушкина, д. 1" />
             <Label Content="Описание местоположения:" />
-            <TextBox x:Name="LocationDescription" Text="{Binding Billboard.LocationDescription}" Margin="5,-5,0,5" />
-            <Label Content="Полезная площадь*: (км)" />
+            <TextBox x:Name="LocationDescription" Text="{Binding Billboard.LocationDescription}" Margin="5,-5,0,5"
+                     materialDesign:HintAssist.Hint="Особенности, полезные арендаторам щита" />
+            <Label Content="Полезная площадь*: (м²)" />
             <TextBox x:Name="UsefulArea" PreviewTextInput="UsefulArea_PreviewTextInput"
+                     materialDesign:HintAssist.Hint="Площадь рекламного щита"
                      Text="{Binding Billboard.UsefulArea}" Margin="5,-5,0,5" />
             <Label Content="Стоимость аренды в неделю*: (рубли)" />
             <TextBox x:Name="RentAmountPerWeek" PreviewTextInput="RentAmountPerWeek_PreviewTextInput"
+                     materialDesign:HintAssist.Hint="4990.90"
                      Text="{Binding Billboard.RentAmountPerWeek}" Margin="5,-5,0,5" />
             <Button Content="Применить" Margin="5" Command="{Binding CreateBillboardCommand}" />
             <Label Content="Если регистрационный номер уже существует, то рекламный щит будет обновлён."

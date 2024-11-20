@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        Title="RenterPanel" MinHeight="720" MinWidth="1280" Icon="pack://application:,,,/Resources/icon.ico">
+        Title="Панель заказа рекламного щита" MinHeight="720" MinWidth="1280"
+        Icon="pack://application:,,,/Resources/icon.ico">
     <Grid Margin="10" HorizontalAlignment="Center" VerticalAlignment="Stretch">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Content="Вернуться в главное меню" HorizontalAlignment="Center" Click="BackToMainMenu_Click"
@@ -16,21 +18,23 @@
             <!-- New Fields -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Начало аренды:" VerticalAlignment="Center" />
-                <DatePicker SelectedDate="{Binding RentStartDate}" />
+                <DatePicker SelectedDate="{Binding RentStartDate}" materialDesign:HintAssist.Hint="дд.мм.гггг" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Количество недель аренды:" VerticalAlignment="Center" />
-                <TextBox Text="{Binding RentDurationWeeks}" Width="50" />
+                <TextBox Text="{Binding RentDurationWeeks}" Width="50" materialDesign:HintAssist.Hint="4" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Конец аренды:" VerticalAlignment="Center" />
-                <TextBox Text="{Binding RentEndDateFormatted, Mode=OneWay}" IsReadOnly="True" />
+                <TextBox Text="{Binding RentEndDateFormatted, Mode=OneWay}" IsReadOnly="True"
+                         materialDesign:HintAssist.Hint="определите начало и продолжительность" />
             </StackPanel>
 
             <!-- URL Input and Image Display -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Ссылка на изображение:" VerticalAlignment="Center" />
-                <TextBox Text="{Binding AdvertisementPhotoLink}" Width="300" />
+                <TextBox Text="{Binding AdvertisementPhotoLink}" Width="300"
+                         materialDesign:HintAssist.Hint="https://example.com/example.jpg" />
             </StackPanel>
             <Image Source="{Binding AdvertisementPhotoLink, Converter={StaticResource UriToImageSourceConverter}}"
                    Width="300" Height="200" />
@@ -38,7 +42,7 @@
             <!-- Payment Type Dropdown -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Тип оплаты:" VerticalAlignment="Center" />
-                <ComboBox SelectedItem="{Binding PaymentType}" Width="150">
+                <ComboBox SelectedItem="{Binding PaymentType}" Width="150" materialDesign:HintAssist.Hint="Не выбрано">
                     <ComboBoxItem Content="Наличные" />
                     <ComboBoxItem Content="Банковский перевод" />
                     <ComboBoxItem Content="Постоплата" />
@@ -48,7 +52,7 @@
             <!-- Additional Terms -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Label Content="Дополнительные условия:" VerticalAlignment="Center" />
-                <TextBox Text="{Binding AdditionalTerms}" Width="300" />
+                <TextBox Text="{Binding AdditionalTerms}" Width="300" materialDesign:HintAssist.Hint="нет" />
             </StackPanel>
 
             <DataGrid ItemsSource="{Binding AvailableBillboards}" SelectedItem="{Binding SelectedBillboard}"
@@ -71,20 +75,24 @@
                     <Label Content="Монтажные работы:" VerticalAlignment="Center" />
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <Label Content="Установка:" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding InstallWorkCostFormatted, Mode=OneWay}" IsReadOnly="True" />
+                        <TextBox Text="{Binding InstallWorkCostFormatted, Mode=OneWay}" IsReadOnly="True"
+                                 materialDesign:HintAssist.Hint="не назначено" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                         <Label Content="Демонтаж:" VerticalAlignment="Center" />
-                        <TextBox Text="{Binding UninstallWorkCostFormatted, Mode=OneWay}" IsReadOnly="True" />
+                        <TextBox Text="{Binding UninstallWorkCostFormatted, Mode=OneWay}" IsReadOnly="True"
+                                 materialDesign:HintAssist.Hint="не назначено" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Label Content="Стоимость аренды:" VerticalAlignment="Center" />
-                    <TextBox Text="{Binding RentCost, Mode=OneWay}" IsReadOnly="True" />
+                    <TextBox Text="{Binding RentCost, Mode=OneWay}" IsReadOnly="True"
+                             materialDesign:HintAssist.Hint="не назначено" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Label Content="Итого:" VerticalAlignment="Center" FontWeight="Bold" FontSize="16" />
                     <TextBox Text="{Binding RentCostTotal, Mode=OneWay}" IsReadOnly="True" FontWeight="Bold"
+                             materialDesign:HintAssist.Hint="не назначено"
                              FontSize="16" />
                 </StackPanel>
             </StackPanel>

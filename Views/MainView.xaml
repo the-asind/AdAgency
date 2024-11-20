@@ -12,15 +12,19 @@
             <Setter Property="Foreground" Value="DimGray" />
         </Style>
     </Window.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <ScrollViewer.Resources>
             <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}" />
         </ScrollViewer.Resources>
         <StackPanel Orientation="Vertical" CanVerticallyScroll="True">
+            
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Top">
                     <Label Content="Логин пользователя: " FontSize="24" FontWeight="Bold" VerticalAlignment="Center" />
                     <Label Content="{Binding Username}" FontSize="24" VerticalAlignment="Center" />
+                    <Button Name="LogOut" Content="Выйти" Margin="15" Padding="10,5,10,5"
+                            Command="{Binding LogOutCommand}"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
                 </StackPanel>
                 <Button Name="ConfiguratorButton" Content="Конфигурирование рекламных щитов"
                         Command="{Binding ConfigureBillboardsCommand}"
@@ -34,33 +38,90 @@
             </Grid>
             <StackPanel Name="AuditGrid" Visibility="Collapsed">
                 <Label Content="AUDIT LOGS:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding AuditLogs}" AutoGenerateColumns="True" Margin="15" />
+                <DataGrid ItemsSource="{Binding AuditLogs}" AutoGenerateColumns="False" Margin="15">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Log ID" Binding="{Binding LogId}" />
+                        <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" />
+                        <DataGridTextColumn Header="Действие" Binding="{Binding Action}" />
+                        <DataGridTextColumn Header="Имя Таблицы" Binding="{Binding TableName}" />
+                        <DataGridTextColumn Header="ID Записи" Binding="{Binding RecordId}" />
+                        <DataGridTextColumn Header="Версия" Binding="{Binding Version}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
             <StackPanel Name="RenterGrid">
                 <Label Content="Информация по арендаторам:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding RenterInfo}" AutoGenerateColumns="True" Margin="15" MinHeight="50" />
+                <DataGrid ItemsSource="{Binding RenterInfo}" AutoGenerateColumns="False" Margin="15" MinHeight="50">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID Арендатора" Binding="{Binding RenterId}" />
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" />
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding LegalAddress}" />
+                        <DataGridTextColumn Header="Директор" Binding="{Binding DirectorName}" />
+                        <DataGridTextColumn Header="Тел. Директора" Binding="{Binding DirectorPhone}" />
+                        <DataGridTextColumn Header="Контактное лицо" Binding="{Binding ContactPersonName}" />
+                        <DataGridTextColumn Header="Тел. Контактного лица" Binding="{Binding ContactPersonPhone}" />
+                        <DataGridTextColumn Header="Банк" Binding="{Binding BankName}" />
+                        <DataGridTextColumn Header="Номер банковского счета" Binding="{Binding BankAccountNumber}" />
+                        <DataGridTextColumn Header="ИНН" Binding="{Binding Inn}" />
+                        <DataGridTextColumn Header="Эл. почта" Binding="{Binding Email}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
             <StackPanel Name="BillboardsGrid">
                 <Label Content="Рекламные щиты:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="True" Margin="15"
-                          MinHeight="50" />
+                <DataGrid ItemsSource="{Binding ContractsBillboards}" AutoGenerateColumns="False" Margin="15"
+                          MinHeight="50">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="ID Рекламного щита" Binding="{Binding BillboardId}" />
+                        <DataGridTextColumn Header="Начало аренды" Binding="{Binding RentStartDate}" />
+                        <DataGridTextColumn Header="Конец аренды" Binding="{Binding RentEndDate}" />
+                        <DataGridTextColumn Header="Стоимость аренды" Binding="{Binding RentAmount}" />
+                        <DataGridTextColumn Header="Ссылка на изображение" Binding="{Binding AdvertisementPhotoLink}" />
+                    </DataGrid.Columns>
+                </DataGrid>
 
                 <Label Content="Контракты:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="True" Margin="15" MinHeight="50" />
+                <DataGrid ItemsSource="{Binding Contracts}" AutoGenerateColumns="False" Margin="15" MinHeight="50">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID Контракта" Binding="{Binding ContractID}" />
+                        <DataGridTextColumn Header="ID Арендатора" Binding="{Binding RenterID}" />
+                        <DataGridTextColumn Header="Номер контракта" Binding="{Binding ContractNumber}" />
+                        <DataGridTextColumn Header="Дата подписания" Binding="{Binding SigningDate}" />
+                        <DataGridTextColumn Header="Ответственное агентство" Binding="{Binding AgencyResponsible}" />
+                        <DataGridTextColumn Header="Общая стоимость" Binding="{Binding TotalAmount}" />
+                        <DataGridTextColumn Header="Вид платежа" Binding="{Binding PaymentType}" />
+                        <DataGridTextColumn Header="Дополнительные условия" Binding="{Binding AdditionalTerms}" />
+                        <DataGridTextColumn Header="Арендатор" Binding="{Binding Renter}" />
+                    </DataGrid.Columns>
+                </DataGrid>
                 <Label Content="Работы по монтажу:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding AdvertisementWorks}" AutoGenerateColumns="True" Margin="15"
-                          MinHeight="50" />
+                <DataGrid ItemsSource="{Binding AdvertisementWorks}" AutoGenerateColumns="False" Margin="15"
+                          MinHeight="50">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID Работы" Binding="{Binding WorkId}" />
+                        <DataGridTextColumn Header="Описание" Binding="{Binding WorkDescription}" />
+                        <DataGridTextColumn Header="Стоимость" Binding="{Binding WorkCost}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
             <StackPanel Name="RentersBillboardsGrid" Visibility="Collapsed">
                 <Label Content="Мои активные рекламные щиты:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding RentersContractsBillboards}" AutoGenerateColumns="True" Margin="15"
+                <DataGrid ItemsSource="{Binding RentersContractsBillboards}" AutoGenerateColumns="False" Margin="15"
                           MinHeight="50" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Advertisement Photo">
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="ID Рекламного щита" Binding="{Binding BillboardId}" />
+                        <DataGridTextColumn Header="Начало аренды" Binding="{Binding RentStartDate}" />
+                        <DataGridTextColumn Header="Конец аренды" Binding="{Binding RentEndDate}" />
+                        <DataGridTextColumn Header="Стоимость аренды" Binding="{Binding RentAmount}" />
+                        <DataGridTextColumn Header="Ссылка на изображение" Binding="{Binding AdvertisementPhotoLink}" />
+                        <DataGridTemplateColumn Header="Рекламное изображение">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="100" Height="50"
+                                        <Image Width="200" Height="100"
                                                Source="{Binding AdvertisementPhotoLink, Converter={StaticResource UriToImageSourceConverter}}" />
                                     </StackPanel>
                                 </DataTemplate>
@@ -68,18 +129,35 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+                <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OpenRenterPanelCommand}"
+                        Margin="15" />
                 <Label Content="Мои контракты:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding RentersContracts}" AutoGenerateColumns="True" Margin="15"
-                          MinHeight="50" IsReadOnly="True" />
+                <DataGrid ItemsSource="{Binding RentersContracts}" AutoGenerateColumns="False" Margin="15"
+                          MinHeight="50" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID Контракта" Binding="{Binding ContractID}" />
+                        <DataGridTextColumn Header="ID Арендатора" Binding="{Binding RenterID}" />
+                        <DataGridTextColumn Header="Номер контракта" Binding="{Binding ContractNumber}" />
+                        <DataGridTextColumn Header="Дата подписания" Binding="{Binding SigningDate}" />
+                        <DataGridTextColumn Header="Ответственное агентство" Binding="{Binding AgencyResponsible}" />
+                        <DataGridTextColumn Header="Общая стоимость" Binding="{Binding TotalAmount}" />
+                        <DataGridTextColumn Header="Вид платежа" Binding="{Binding PaymentType}" />
+                        <DataGridTextColumn Header="Дополнительные условия" Binding="{Binding AdditionalTerms}" />
+                    </DataGrid.Columns>
+                </DataGrid>
                 <Label Content="Мои работы по монтажу:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding RentersAdvertisementWorks}" AutoGenerateColumns="True" Margin="15"
-                          IsReadOnly="True"
-                          MinHeight="50" />
+                <DataGrid ItemsSource="{Binding RentersAdvertisementWorks}" AutoGenerateColumns="False" Margin="15"
+                          IsReadOnly="True" MinHeight="50">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID Работы" Binding="{Binding WorkId}" />
+                        <DataGridTextColumn Header="Описание" Binding="{Binding WorkDescription}" />
+                        <DataGridTextColumn Header="Стоимость" Binding="{Binding WorkCost}" />
+                    </DataGrid.Columns>
+                </DataGrid>
             </StackPanel>
 
 
-            <Button Name="RenterButton" Content="Заказ рекламного щита" Command="{Binding OpenRenterPanelCommand}"
-                    Margin="15" Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+            
         </StackPanel>
     </ScrollViewer>
 </Window>

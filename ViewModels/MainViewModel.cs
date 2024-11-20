@@ -67,6 +67,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     public ICommand? AdminPanelCommand { get; set; }
     public ICommand? ConfigureBillboardsCommand { get; set; }
+    public ICommand? LogOutCommand { get; set; }
 
     private string? _renterOutput;
 
@@ -112,9 +113,19 @@ public class MainViewModel : INotifyPropertyChanged
         RenterInfo = new ObservableCollection<Renter>(_context.Renters.ToList());
         AdminPanelCommand = new RelayCommand(OpenAdminPanel, CanOpenAdminPanel);
         ConfigureBillboardsCommand = new RelayCommand(ConfigureBillboards, CanConfigureBillboards);
+        LogOutCommand = new RelayCommand(LogOut, () => true);
         ContractsBillboards = new ObservableCollection<ContractBillboard>(_context.ContractBillboards.ToList());
         Contracts = new ObservableCollection<Contract>(_context.Contracts.ToList());
         AdvertisementWorks = new ObservableCollection<AdvertisementWork>(_context.AdvertisementWorks.ToList());
+    }
+
+    private void LogOut()
+    {
+        var loginWindow = new LoginView();
+        loginWindow.Show();
+        if (Application.Current.MainWindow != null)
+            Application.Current.MainWindow.Close();
+        Application.Current.MainWindow = loginWindow;
     }
 
     private void OpenAdminPanel()
