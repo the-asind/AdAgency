@@ -3,11 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:AdAgency.Converters"
         MinWidth="720" MinHeight="720" Width="1280" SizeToContent="Width" WindowStartupLocation="CenterScreen"
-        Title="Рекламное агентство" Loaded="Window_Loaded">
+        Title="Рекламное агентство" Loaded="Window_Loaded" Icon="pack://application:,,,/Resources/icon.ico">
     <Window.Resources>
         <converters:UriToImageSourceConverter x:Key="UriToImageSourceConverter" />
+        <Style x:Key="CustomScrollBar" TargetType="ScrollBar">
+            <Setter Property="Width" Value="45" />
+            <Setter Property="Background" Value="WhiteSmoke" />
+            <Setter Property="Foreground" Value="DimGray" />
+        </Style>
     </Window.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer.Resources>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}" />
+        </ScrollViewer.Resources>
         <StackPanel Orientation="Vertical" CanVerticallyScroll="True">
             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Top">
