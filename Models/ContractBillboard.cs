@@ -15,6 +15,6 @@ public class ContractBillboard
 
     public DateTime? RentStartDate { get; set; }
     public DateTime? RentEndDate { get; set; }
-    public decimal RentAmount { get; set; }
-    public required string AdvertisementPhotoLink { get; set; }
+    public decimal RentAmount { get; set; } // in RUB
+    public required string AdvertisementPhotoLink { get; set; } // link to the photo of the advertisement "https://example.com/photo.jpg"
 }

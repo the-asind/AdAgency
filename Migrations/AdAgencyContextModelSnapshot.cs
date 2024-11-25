@@ -50,15 +50,29 @@ namespace AdAgency.Migrations
                         {
                             WorkId = 1,
                             ContractId = 1,
-                            WorkCost = 1000m,
-                            WorkDescription = "Work 1"
+                            WorkCost = 5000.0m,
+                            WorkDescription = "Печать баннера"
                         },
                         new
                         {
                             WorkId = 2,
                             ContractId = 2,
-                            WorkCost = 2000m,
-                            WorkDescription = "Work 2"
+                            WorkCost = 7000.0m,
+                            WorkDescription = "Монтаж билборда"
+                        },
+                        new
+                        {
+                            WorkId = 3,
+                            ContractId = 3,
+                            WorkCost = 6000.0m,
+                            WorkDescription = "Разработка макета"
+                        },
+                        new
+                        {
+                            WorkId = 4,
+                            ContractId = 4,
+                            WorkCost = 8000.0m,
+                            WorkDescription = "Дизайн и изготовление"
                         });
                 });
 
@@ -81,39 +95,17 @@ namespace AdAgency.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
-
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
 
                     b.HasKey("LogId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("AuditLogs");
-
-                    b.HasData(
-                        new
-                        {
-                            LogId = 1,
-                            Action = "Action 1",
-                            RecordId = 1,
-                            TableName = "Table 1",
-                            UserId = 1,
-                            Version = new byte[0]
-                        },
-                        new
-                        {
-                            LogId = 2,
-                            Action = "Action 2",
-                            RecordId = 2,
-                            TableName = "Table 2",
-                            UserId = 2,
-                            Version = new byte[0]
-                        });
                 });
 
             modelBuilder.Entity("AdAgency.Models.Billboard", b =>
@@ -153,22 +145,62 @@ namespace AdAgency.Migrations
                         new
                         {
                             BillboardId = 1,
-                            Address = "Address 1",
-                            CityDistrict = "District 1",
-                            LocationDescription = "Location 1",
-                            RegistrationNumber = "RN1",
-                            RentAmountPerWeek = 100m,
-                            UsefulArea = 100m
+                            Address = "г. Москва, Красная площадь, д. 1",
+                            CityDistrict = "Центральный",
+                            LocationDescription = "Рядом с Кремлем",
+                            RegistrationNumber = "AA-1001",
+                            RentAmountPerWeek = 10000.0m,
+                            UsefulArea = 30.0m
                         },
                         new
                         {
                             BillboardId = 2,
-                            Address = "Address 2",
-                            CityDistrict = "District 2",
-                            LocationDescription = "Location 2",
-                            RegistrationNumber = "RN2",
-                            RentAmountPerWeek = 200m,
-                            UsefulArea = 200m
+                            Address = "г. Москва, Тверская ул., д. 15",
+                            CityDistrict = "Тверской",
+                            LocationDescription = "Около метро Маяковская",
+                            RegistrationNumber = "AA-1002",
+                            RentAmountPerWeek = 8000.0m,
+                            UsefulArea = 25.0m
+                        },
+                        new
+                        {
+                            BillboardId = 3,
+                            Address = "г. Санкт-Петербург, Адмиралтейский пр., д. 3",
+                            CityDistrict = "Адмиралтейский",
+                            LocationDescription = "Напротив Эрмитажа",
+                            RegistrationNumber = "AA-1003",
+                            RentAmountPerWeek = 9000.0m,
+                            UsefulArea = 28.0m
+                        },
+                        new
+                        {
+                            BillboardId = 4,
+                            Address = "г. Санкт-Петербург, 8-я линия В.О., д. 42",
+                            CityDistrict = "Василеостровский",
+                            LocationDescription = "У входа в парк",
+                            RegistrationNumber = "AA-1004",
+                            RentAmountPerWeek = 7000.0m,
+                            UsefulArea = 22.0m
+                        },
+                        new
+                        {
+                            BillboardId = 5,
+                            Address = "г. Санкт-Петербург, пр. Испытателей, д. 5",
+                            CityDistrict = "Приморский",
+                            LocationDescription = "Рядом с ТРЦ",
+                            RegistrationNumber = "AA-1005",
+                            RentAmountPerWeek = 6500.0m,
+                            UsefulArea = 20.0m
+                        },
+                        new
+                        {
+                            BillboardId = 6,
+                            Address = "г. Москва, ул. Большая Ордынка, д. 17",
+                            CityDistrict = "Замоскворечье",
+                            LocationDescription = "Недалеко от Третьяковской галереи",
+                            RegistrationNumber = "AA-1006",
+                            RentAmountPerWeek = 7500.0m,
+                            UsefulArea = 24.0m
                         });
                 });
 
@@ -215,26 +247,50 @@ namespace AdAgency.Migrations
                         new
                         {
                             ContractId = 1,
-                            AdditionalTerms = "None",
-                            AgencyResponsible = "Agency1",
-                            ContractNumber = "123456",
-                            PaymentType = "Cash",
+                            AdditionalTerms = "Нет",
+                            AgencyResponsible = "Иванова Е.А.",
+                            ContractNumber = "AA-1001-00001",
+                            PaymentType = "Наличные",
                             RenterId = 1,
-                            SigningDate = new DateTime(2024, 10, 29, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8005),
-                            Status = "active",
-                            TotalAmount = 0m
+                            SigningDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Активен",
+                            TotalAmount = 30000.0m
                         },
                         new
                         {
                             ContractId = 2,
-                            AdditionalTerms = "None",
-                            AgencyResponsible = "Agency2",
-                            ContractNumber = "654321",
-                            PaymentType = "Credit",
+                            AdditionalTerms = "Нет",
+                            AgencyResponsible = "Иванова Е.А.",
+                            ContractNumber = "AA-1001-00002",
+                            PaymentType = "Банковский перевод",
+                            RenterId = 1,
+                            SigningDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Активен",
+                            TotalAmount = 25000.0m
+                        },
+                        new
+                        {
+                            ContractId = 3,
+                            AdditionalTerms = "Нет",
+                            AgencyResponsible = "Сидорова А.В.",
+                            ContractNumber = "AA-1002-00003",
+                            PaymentType = "Постоплата",
                             RenterId = 2,
-                            SigningDate = new DateTime(2024, 10, 29, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8005),
-                            Status = "cancelled",
-                            TotalAmount = 0m
+                            SigningDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Активен",
+                            TotalAmount = 28000.0m
+                        },
+                        new
+                        {
+                            ContractId = 4,
+                            AdditionalTerms = "Нет",
+                            AgencyResponsible = "Сидорова А.В.",
+                            ContractNumber = "AA-1002-00004",
+                            PaymentType = "Наличные",
+                            RenterId = 2,
+                            SigningDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Активен",
+                            TotalAmount = 35000.0m
                         });
                 });
 
@@ -277,22 +333,62 @@ namespace AdAgency.Migrations
                         new
                         {
                             Id = 1,
-                            AdvertisementPhotoLink = "https://mods.store.gx.me/mod/32027713-3e24-46ea-98d2-708f13991e17/cover/5b8f3267-3ad1-444e-8f75-83bab0a48848/webp-640x360?4b8390341bc39300397de58b9cb17301",
+                            AdvertisementPhotoLink = "https://example.com/ad1.jpg",
                             BillboardId = 1,
                             ContractId = 1,
-                            RentAmount = 1000m,
-                            RentEndDate = new DateTime(2024, 11, 19, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8036),
-                            RentStartDate = new DateTime(2024, 10, 29, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8034)
+                            RentAmount = 30000.0m,
+                            RentEndDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = 2,
-                            AdvertisementPhotoLink = "https://avatars.mds.yandex.net/get-mpic/4880383/img_id745194673364714228.jpeg/orig",
+                            AdvertisementPhotoLink = "https://example.com/ad2.jpg",
                             BillboardId = 2,
+                            ContractId = 1,
+                            RentAmount = 30000.0m,
+                            RentEndDate = new DateTime(2025, 1, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AdvertisementPhotoLink = "https://example.com/ad3.jpg",
+                            BillboardId = 6,
                             ContractId = 2,
-                            RentAmount = 2000m,
-                            RentEndDate = new DateTime(2024, 11, 12, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8042),
-                            RentStartDate = new DateTime(2024, 10, 29, 21, 39, 37, 265, DateTimeKind.Utc).AddTicks(8041)
+                            RentAmount = 25000.0m,
+                            RentEndDate = new DateTime(2025, 2, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AdvertisementPhotoLink = "https://example.com/ad4.jpg",
+                            BillboardId = 3,
+                            ContractId = 3,
+                            RentAmount = 28000.0m,
+                            RentEndDate = new DateTime(2025, 3, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AdvertisementPhotoLink = "https://example.com/ad5.jpg",
+                            BillboardId = 4,
+                            ContractId = 4,
+                            RentAmount = 35000.0m,
+                            RentEndDate = new DateTime(2025, 4, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AdvertisementPhotoLink = "https://example.com/ad6.jpg",
+                            BillboardId = 5,
+                            ContractId = 4,
+                            RentAmount = 35000.0m,
+                            RentEndDate = new DateTime(2025, 4, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            RentStartDate = new DateTime(2024, 11, 26, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -355,31 +451,32 @@ namespace AdAgency.Migrations
                         new
                         {
                             RenterId = 1,
-                            BankAccountNumber = "Account1",
-                            BankName = "Bank1",
-                            ContactPersonName = "Contact1",
-                            ContactPersonPhone = "Phone1",
-                            DirectorName = "Director1",
-                            DirectorPhone = "Phone1",
-                            Email = "email@1.com",
-                            Inn = "Inn1",
-                            LegalAddress = "Address1",
-                            Name = "Renter1",
-                            Status = "Status1"
+                            BankAccountNumber = "40702810900000000001",
+                            BankName = "Сбербанк",
+                            ContactPersonName = "Петрова Мария Ивановна",
+                            ContactPersonPhone = "+79990002233",
+                            DirectorName = "Иванов Сергей Павлович",
+                            DirectorPhone = "+79990001122",
+                            Email = "info@alpha.ru",
+                            Inn = "7723456789",
+                            LegalAddress = "г. Москва, ул. Пушкина, д. 10",
+                            Name = "ООО \"Рекламное Агентство Альфа\"",
+                            Status = "Действующий"
                         },
                         new
                         {
                             RenterId = 2,
-                            BankAccountNumber = "Account2",
-                            BankName = "Bank2",
-                            ContactPersonName = "Contact2",
-                            ContactPersonPhone = "Phone2",
-                            DirectorName = "Director2",
-                            DirectorPhone = "Phone2",
-                            Inn = "Inn2",
-                            LegalAddress = "Address2",
-                            Name = "Renter2",
-                            Status = "Status2"
+                            BankAccountNumber = "40702810900000000002",
+                            BankName = "Альфа-Банк",
+                            ContactPersonName = "Кузнецов Дмитрий Сергеевич",
+                            ContactPersonPhone = "+79990004455",
+                            DirectorName = "Сидоров Алексей Викторович",
+                            DirectorPhone = "+79990003344",
+                            Email = "contact@beta.ru",
+                            Inn = "7823456789",
+                            LegalAddress = "г. Санкт-Петербург, пр. Невский, д. 20",
+                            Name = "ЗАО \"Медиа Бета\"",
+                            Status = "Действующий"
                         });
                 });
 

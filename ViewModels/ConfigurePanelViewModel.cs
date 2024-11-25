@@ -67,6 +67,7 @@ public class ConfigurePanelViewModel : INotifyPropertyChanged
         }
         else
         {
+            // Не устанавливать BillboardId вручную
             _context.Billboards.Add(Billboard);
             Billboards.Add(Billboard);
         }

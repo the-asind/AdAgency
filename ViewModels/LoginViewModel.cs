@@ -61,10 +61,6 @@ public class LoginViewModel : INotifyPropertyChanged
             return;
         }
 
-
-        if (Username == "1" || Password == "1")
-            new AdminPanelViewModel(new AdAgencyContext(), "1").UpdateOrCreateAccount("admin", "admin", "admin", null);
-        
         var hashedPassword = PasswordHasher.HashPassword(Password);
         if (AuthenticationService.Login(Username, hashedPassword, _context))
         {

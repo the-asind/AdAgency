@@ -6,11 +6,11 @@ public class Billboard
 {
     [Key]
     public int BillboardId { get; set; }
-    public required string RegistrationNumber { get; set; }
+    public required string RegistrationNumber { get; set; } // unique identifier like: AA-1234
     public required string CityDistrict { get; set; }
-    public required string Address { get; set; }
-    public string? LocationDescription { get; set; }
-    public decimal UsefulArea { get; set; }
+    public required string Address { get; set; } // street, house number
+    public string? LocationDescription { get; set; } // useful for renters information
+    public decimal UsefulArea { get; set; } // size of ad screen in square meters (m^2)
 
-    public decimal RentAmountPerWeek { get; set; }
+    public decimal RentAmountPerWeek { get; set; } // in RUB
 }

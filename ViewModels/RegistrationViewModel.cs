@@ -53,6 +53,7 @@ namespace AdAgency.ViewModels
         public string? ContactPersonName { get; set; }
         public string? ContactPersonPhone { get; set; }
         public string? BankName { get; set; }
+        public string? Email { get; set; }
         public string? BankAccountNumber { get; set; }
         public string? Inn { get; set; }
 
@@ -95,7 +96,7 @@ namespace AdAgency.ViewModels
                 return;
             }
 
-            if (!Regex.IsMatch(Username, @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"))
+            if (!Regex.IsMatch(Email, @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"))
             {
                 MessageBox.Show("Некорректный email. Пожалуйста, введите корректный email.");
                 return;
@@ -124,12 +125,16 @@ namespace AdAgency.ViewModels
                     ContactPersonPhone = ContactPersonPhone,
                     BankName = BankName,
                     BankAccountNumber = BankAccountNumber,
-                    Inn = Inn
+                    Inn = Inn,
+                    Email = Email
                 }
             };
 
             _context.Users.Add(newUser);
             _context.SaveChanges();
+
+            // Не устанавливать CurrentUserId вручную
+            //_context.CurrentUserId = newUser.UserId;
 
             var loginView = new LoginView();
             loginView.Show();

@@ -150,6 +150,7 @@ public class RenterPanelViewModel : INotifyPropertyChanged
     {
         _context = context;
         _username = username;
+        _context.CurrentUserId = GetUserIdByUsername(username);
         var user = _context.Users.Include(u => u.Renter).FirstOrDefault(u => u.Username == username);
         if (user != null && user.Renter != null)
         {
@@ -163,6 +164,12 @@ public class RenterPanelViewModel : INotifyPropertyChanged
 
         AvailableBillboards = new ObservableCollection<Billboard>(_context.Billboards.ToList());
         BuyBillboardCommand = new RelayCommand(BuyBillboard, CanBuyBillboard);
+    }
+
+    private int GetUserIdByUsername(string username)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Username == username);
+        return user?.UserId ?? 0;
     }
 
     private void CalculateRentEndDate()
@@ -198,7 +205,7 @@ public class RenterPanelViewModel : INotifyPropertyChanged
         }
     }
 
-    private void UpdateAvailableBillboards()
+    public void UpdateAvailableBillboards()
     {
         if (!RentStartDate.HasValue || !RentEndDate.HasValue) return;
 
@@ -208,12 +215,12 @@ public class RenterPanelViewModel : INotifyPropertyChanged
         var availableBillboards = _context.Billboards
             .Where(b => !_context.ContractBillboards.Any(cb =>
                 cb.BillboardId == b.BillboardId &&
-                ((DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) <= startDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) >= startDate) ||
-                 (DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) <= endDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) >= endDate) ||
-                 (DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentStartDate.Value.ToBinary()), 0)) >= startDate &&
-                  DateTime.FromBinary(BitConverter.ToInt64(BitConverter.GetBytes(cb.RentEndDate.Value.ToBinary()), 0)) <= endDate))))
+                (
+                    (cb.RentStartDate <= startDate && cb.RentEndDate >= startDate) ||
+                    (cb.RentStartDate <= endDate && cb.RentEndDate >= endDate) ||
+                    (cb.RentStartDate >= startDate && cb.RentEndDate <= endDate)
+                )
+            ))
             .ToList();
 
         AvailableBillboards = new ObservableCollection<Billboard>(availableBillboards);

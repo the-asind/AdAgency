@@ -36,16 +36,16 @@
                 <Label Name="renterOutput" Content="{Binding RenterOutput}" Margin="15" HorizontalAlignment="Left"
                        VerticalAlignment="Center" HorizontalContentAlignment="Right" />
             </Grid>
-            <StackPanel Name="AuditGrid" Visibility="Collapsed">
+            <StackPanel Name="AuditGrid" Visibility="Collapsed" >
                 <Label Content="AUDIT LOGS:" Padding="15,0,0,0" />
-                <DataGrid ItemsSource="{Binding AuditLogs}" AutoGenerateColumns="False" Margin="15">
+                <DataGrid ItemsSource="{Binding AuditLogs}" AutoGenerateColumns="False" Margin="15" MaxHeight="400">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Log ID" Binding="{Binding LogId}" />
                         <DataGridTextColumn Header="User ID" Binding="{Binding UserId}" />
                         <DataGridTextColumn Header="Действие" Binding="{Binding Action}" />
                         <DataGridTextColumn Header="Имя Таблицы" Binding="{Binding TableName}" />
                         <DataGridTextColumn Header="ID Записи" Binding="{Binding RecordId}" />
-                        <DataGridTextColumn Header="Версия" Binding="{Binding Version}" />
+                        <DataGridTextColumn Header="Время" Binding="{Binding Timestamp}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

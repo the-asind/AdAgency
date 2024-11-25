@@ -42,6 +42,10 @@
         <Resource Include="Resources\icon.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Resource>
+        <None Remove="Resources\secret.txt" />
+        <Resource Include="Resources\secret.txt">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Resource>
     </ItemGroup>
 
 </Project>

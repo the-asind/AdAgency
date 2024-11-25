@@ -37,7 +37,14 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
     {
         _username = username;
         _context = context;
+        _context.CurrentUserId = GetUserIdByUsername(username);
         DbTableData = new ObservableCollection<object>();
+    }
+
+    private int GetUserIdByUsername(string username)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Username == username);
+        return user?.UserId ?? 0;
     }
 
     public void LoadDbTableData()
@@ -85,7 +92,23 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
             {
                 case "AdvertisementWork":
                     foreach (var item in DbTableData.Cast<AdvertisementWork>())
-                        _context.Entry(item).State = item.WorkId == 0 ? EntityState.Added : EntityState.Modified;
+                    {
+                        if (item.WorkId < 0)
+                        {
+                            // Обновление существующих seed данных
+                            _context.AdvertisementWorks.Update(item);
+                        }
+                        else if (item.WorkId == 0)
+                        {
+                            // Добавление новых записей без установки WorkId
+                            _context.AdvertisementWorks.Add(item);
+                        }
+                        else
+                        {
+                            // Обновление существующих записей
+                            _context.Entry(item).State = EntityState.Modified;
+                        }
+                    }
                     break;
                 case "AuditLogs":
                     foreach (var item in DbTableData.Cast<AuditLog>())
@@ -93,7 +116,23 @@ public sealed class AdminPanelViewModel : INotifyPropertyChanged
                     break;
                 case "Billboard":
                     foreach (var item in DbTableData.Cast<Billboard>())
-                        _context.Entry(item).State = item.BillboardId == 0 ? EntityState.Added : EntityState.Modified;
+                    {
+                        if (item.BillboardId < 0)
+                        {
+                            // Обновление существующих seed данных
+                            _context.Billboards.Update(item);
+                        }
+                        else if (item.BillboardId == 0)
+                        {
+                            // Добавление новых записей без установки BillboardId
+                            _context.Billboards.Add(item);
+                        }
+                        else
+                        {
+                            // Обновление существующих записей
+                            _context.Entry(item).State = EntityState.Modified;
+                        }
+                    }
                     break;
                 case "Contract":
                     foreach (var item in DbTableData.Cast<Contract>())

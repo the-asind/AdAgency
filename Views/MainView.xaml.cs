@@ -26,6 +26,7 @@ public partial class MainView : Window
                 AuditGrid.Visibility = Visibility.Visible;
                 break;
             case MainViewModel.UserRole.Renter:
+                LogOut.Visibility = Visibility.Collapsed;
                 AdminButton.Visibility = Visibility.Collapsed;
                 ConfiguratorButton.Visibility = Visibility.Collapsed;
                 RenterGrid.Visibility = Visibility.Collapsed;
